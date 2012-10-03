@@ -1,0 +1,77 @@
+<resources>
+
+    <!-- String for activity and application titles -->
+    <string name="app_name">TestApp</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_feed">Feed</string>
+
+    <!-- Strings for the categories -->
+    <string name="movies">Movies</string>
+    <string name="music">Music</string>
+    <string name="games">Games</string>
+    <string name="shows">Shows</string>
+    <string name="applications">Apps</string>
+
+    <!-- Strings for the quick action buttons -->
+    <string name="download">Download</string>
+    <string name="share">Share</string>
+    <string name="enqueue">Enqueue</string>
+    <string name="website">Website</string>
+
+    <!-- Strings for the sorting options -->
+    <string name="by_seeders">By Seeders</string>
+    <string name="by_leechers">By Leechers</string>
+    <string name="by_size">By Size</string>
+    <string name="by_date">By Date</string>
+    
+    <!-- Strings for the grouping options -->
+    <string name="by_site">By Site</string>    
+    <string name="by_type">By Type</string>
+    <string name="by_visibility">By Visibility</string>
+    <string name="by_quality">By Quality</string>
+    
+    <!-- String for the settings' fields -->
+    <string name="fenopytorrents">Fenopy Torrents</string>
+    <string name="configure_your_fenopytorrents_options">Configure your Fenopy Torrent options</string>
+    <string name="username">Username</string>
+    <string name="enter_your_username">Enter your username</string>
+    <string name="configure_your_torrentleech_credentials">Configre your Torrentleech credentials</string>
+    <string name="torrentleech">Torrentleech</string>
+    <string name="use">Use</string>
+    <string name="check_this_to_use_this_service">Check this to use this service</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="password">Password</string>
+    <string name="configure_your_kickasstorrents_options">Configure your Kickass Torrent options</string>    
+    <string name="kickasstorrents">Kickass Torrents</string>
+    
+    <!-- Strings for the popup menu options -->
+    <string name="sort">Sort</string>
+    <string name="filter">Filter</string>
+    <string name="group">Group</string>
+    <string name="settings">Settings</string>
+    
+    <!-- Strings for the filtering options -->
+    <string name="only_lq">Only LQ</string>
+    <string name="only_hq">Only HQ</string>
+    <string name="only_private">Only Private</string>
+    <string name="only_public">Only Public</string>
+    
+    <!-- Strings for the Octicon icons -->
+    <string name="seeds">\uf20c</string>
+    <string name="peers">\uf20b</string>
+    <string name="sizes">\uf224</string>
+    <string name="verified">\uf27b</string>
+    
+    <!-- Strings for the search suggestions -->
+    <string name="search_for_movies">Search for movies</string>
+    <string name="search_for_music">Search for music</string>
+    <string name="search_for_games">Search for games</string>
+    <string name="search_for_shows">Search for shows</string>
+    <string name="search_for_applications">Search for applications</string>
+
+    <!-- Strings for the notification messages and alert dialogs -->
+    <string name="no_results_found">No results found. Please try a different search.</string>
+    <string name="unable_to_fetch">Unable to fetch the latest trending torrents.</string>
+    <string name="nothing_after_filtering">There were no results after filtering. Please choose a different filter.</string>
+    
+</resources>

@@ -1,0 +1,173 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        style="@style/ListItem"
+        android:layout_width="match_parent" 
+        android:layout_height="80dp"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginRight="15.0dip">
+
+        <TextView
+            android:id="@+id/indexer"
+            style="@style/celltop"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true" />
+
+        <TextView
+            android:id="@+id/date"
+            style="@style/celltop"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:gravity="right" />        
+        
+        <TextView
+            android:id="@+id/name"
+            style="@style/celltitle"
+            android:layout_width="match_parent"
+            android:layout_below="@id/indexer" />
+
+        <LinearLayout
+            android:id="@+id/details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@id/name"
+            android:layout_below="@id/name"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <com.example.testapp.widgets.Octicon
+                android:id="@+id/seeds"
+                style="@style/octicon"
+                android:text="@string/seeds" />
+
+            <TextView
+                android:id="@+id/seeders"
+                style="@style/cellbottom"
+                android:paddingLeft="3dp"
+                android:paddingRight="15dp" />
+
+            <com.example.testapp.widgets.Octicon
+                android:id="@+id/peers"
+                style="@style/octicon"
+                android:fontFamily=""
+                android:text="@string/peers" />
+
+            <TextView
+                android:id="@+id/leechers"
+                style="@style/cellbottom"
+                android:paddingLeft="3dp"
+                android:paddingRight="15dp" />
+
+            <com.example.testapp.widgets.Octicon
+                android:id="@+id/sizes"
+                style="@style/octicon"
+                android:fontFamily=""
+                android:text="@string/sizes" />            
+            
+            <TextView
+                android:id="@+id/filesize"
+                style="@style/cellbottom"
+                android:paddingLeft="3dp"
+                android:paddingRight="15dp" />
+
+            <com.example.testapp.widgets.Octicon
+                android:id="@+id/verified"
+                style="@style/octicon"
+                android:fontFamily=""
+                android:text="@string/verified" />
+            
+        </LinearLayout>
+        
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="fill_parent"
+        android:layout_height="62.0dip"
+        android:gravity="center"
+        android:layout_marginBottom="-62.0dip"
+        android:background="@drawable/bg_quickaction_popup"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/downloader"
+            android:layout_width="68.0dip"
+            android:layout_height="62.0dip"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                style="@style/button"
+                android:id="@+id/download"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:text="@string/download"
+                android:drawableTop="@drawable/icn_quickact_download" />
+                
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sharer"
+            android:layout_width="68.0dip"
+            android:layout_height="62.0dip"
+            android:layout_marginLeft="30dp"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                style="@style/button"
+                android:id="@+id/share"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:text="@string/share"
+                android:drawableTop="@drawable/icn_quickact_share" />
+            
+        </LinearLayout>        
+
+        <LinearLayout
+            android:id="@+id/enqueuer"
+            android:layout_width="68.0dip"
+            android:layout_height="62.0dip"
+            android:layout_marginLeft="30dp"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                style="@style/button"                
+                android:id="@+id/enqueue"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:text="@string/enqueue"
+                android:drawableTop="@drawable/icn_quickact_queue" />
+            
+        </LinearLayout> 
+
+        <LinearLayout
+            android:id="@+id/websiterr"
+            android:layout_width="68.0dip"
+            android:layout_height="62.0dip"
+            android:layout_marginLeft="30dp"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                style="@style/button"    
+                android:id="@+id/website"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:text="@string/website"
+                android:drawableTop="@drawable/icn_quickact_publish" />
+            
+        </LinearLayout> 
+        
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0dip"
+        android:background="@drawable/bg_list_divider" />
+
+</LinearLayout>

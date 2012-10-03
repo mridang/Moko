@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="text">#1E1E1E</color>
+    <color name="text_light">#AEAEAE</color>
+    <color name="text_icon">#A8A8A8</color>
+    
+    <!-- Colours for the buttons on the quick action -->
+    <color name="bg_quickaction">#d8000000</color>
+    <color name="bg_quickaction_item_normal">#00000000</color>
+    <color name="bg_quickaction_item_pressed">@color/bg_pressed</color>
+    
+    
+    <color name="bg_pressed">@color/green</color>
+    <color name="green">#ff86b410</color>
+    <color name="bg_list">@color/bg_normal</color>
+    <color name="bg_normal">#ffecebe8</color>
+    <color name="bg_transparent">#00000000</color>
+    <color name="bg_list_divider">@color/bg_divider</color>
+    <color name="bg_divider">#ffd9d9d6</color>
+    
+</resources>

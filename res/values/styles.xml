@@ -1,0 +1,84 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="LightThemeSelector" parent="android:Theme.Holo.Light.DarkActionBar" />
+
+    <!-- Small icons displayed in the bottom row of a cell -->
+    <style name="octicon">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/text_icon</item>
+        <item name="android:textSize">14dp</item>
+    </style>    
+    
+    <!-- Elements in the top row of a cell e.g. date and indexer -->
+    <style name="celltop">
+        <item name="android:textSize">12.0dip</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/text_light</item>
+        <item name="android:ellipsize">marquee</item>
+		<item name="android:paddingBottom">0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+    </style>    
+    
+    <!-- Button for the quick actions in the ListView popdown -->
+    <style name="button">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@drawable/bg_quickaction_item</item>
+        <item name="android:gravity">center</item>
+        <item name="android:lines">1</item>
+        <item name="android:padding">8.0dip</item>
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:textSize">11.0dip</item>
+    </style>
+
+    <!-- Listviews to show the results and torrents -->
+    <style name="lists">
+	    <item name="android:background">@color/bg_list</item>
+	    <item name="android:cacheColorHint">@color/bg_list</item>
+	    <item name="android:divider">@null</item>
+	    <item name="android:dividerHeight">0.0px</item>
+	    <item name="android:fadingEdge">none</item>
+	    <item name="android:listSelector">@drawable/bg_transparent_item</item> 
+	    <item name="android:smoothScrollbar">true</item>
+	    <item name="android:soundEffectsEnabled">true</item>
+    </style>
+    
+    <!-- Title of the cell -->
+    <style name="celltitle">
+        <item name="android:textSize">16.0dip</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:paddingBottom">2.0dip</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    
+    <!-- Elements in the bottom row of a cell e.g. seeders and leechers -->
+    <style name="cellbottom">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/text_light</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:paddingBottom">2.0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:singleLine">true</item>
+    </style>    
+    
+	<!-- Individual item in a ListView -->    
+    <style name="ListItem">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+</resources>
