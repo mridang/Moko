@@ -38,7 +38,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal" >
 
-            <com.example.testapp.widgets.Octicon
+            <com.mridang.huntr.widgets.Octicon
                 android:id="@+id/seeds"
                 style="@style/octicon"
                 android:text="@string/seeds" />
@@ -49,10 +49,9 @@
                 android:paddingLeft="3dp"
                 android:paddingRight="15dp" />
 
-            <com.example.testapp.widgets.Octicon
+            <com.mridang.huntr.widgets.Octicon
                 android:id="@+id/peers"
                 style="@style/octicon"
-                android:fontFamily=""
                 android:text="@string/peers" />
 
             <TextView
@@ -61,10 +60,9 @@
                 android:paddingLeft="3dp"
                 android:paddingRight="15dp" />
 
-            <com.example.testapp.widgets.Octicon
+            <com.mridang.huntr.widgets.Octicon
                 android:id="@+id/sizes"
                 style="@style/octicon"
-                android:fontFamily=""
                 android:text="@string/sizes" />            
             
             <TextView
@@ -73,10 +71,9 @@
                 android:paddingLeft="3dp"
                 android:paddingRight="15dp" />
 
-            <com.example.testapp.widgets.Octicon
+            <com.mridang.huntr.widgets.Octicon
                 android:id="@+id/verified"
                 style="@style/octicon"
-                android:fontFamily=""
                 android:text="@string/verified" />
             
         </LinearLayout>
