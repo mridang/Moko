@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mridang.huntr"
+    package="com.mridang.moko"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -46,7 +46,7 @@
         <provider
             android:name=".providers.QuickSearchProvider"
             android:exported="false"
-            android:authorities="com.mridang.huntr.providers.QuickSearchProvider" />
+            android:authorities="com.mridang.moko.providers.QuickSearchProvider" />
 
         <meta-data
             android:name="android.app.default_searchable"
