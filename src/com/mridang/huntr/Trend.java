@@ -29,11 +29,12 @@ import com.mridang.huntr.adapters.TrendingTorrentsAdapter;
 import com.mridang.huntr.asynctasks.Enqueuer;
 import com.mridang.huntr.asynctasks.Scraper;
 import com.mridang.huntr.asynctasks.Viewer;
-import com.mridang.huntr.managers.ResultsManager;
 import com.mridang.huntr.managers.TrendingManager;
 import com.mridang.huntr.managers.TrendingManager.Filter;
 import com.mridang.huntr.managers.TrendingManager.Group;
 import com.mridang.huntr.managers.TrendingManager.Sort;
+import com.mridang.huntr.search.Search;
+import com.mridang.huntr.search.managers.ResultsManager;
 
 public class Trend extends Activity {
 

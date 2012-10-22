@@ -1,4 +1,4 @@
-package com.mridang.huntr.adapters;
+package com.mridang.huntr.search.adapters;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,10 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mridang.huntr.R;
-import com.mridang.huntr.Search;
 import com.mridang.huntr.helpers.SizeConverter;
 import com.mridang.huntr.interfaces.Row;
-import com.mridang.huntr.managers.ResultsManager;
+import com.mridang.huntr.search.Search;
+import com.mridang.huntr.search.managers.ResultsManager;
 import com.mridang.huntr.structures.Section;
 import com.mridang.huntr.structures.Torrent;
 

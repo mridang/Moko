@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.mridang.huntr.R;
-import com.mridang.huntr.Search;
+import com.mridang.huntr.search.Search;
 
 /*
  * This is custom provider for the search view.

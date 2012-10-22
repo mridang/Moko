@@ -1,4 +1,4 @@
-package com.mridang.huntr.asynctasks;
+package com.mridang.huntr.search.asynctasks;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,13 +20,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.mridang.huntr.R;
-import com.mridang.huntr.Search;
-import com.mridang.huntr.adapters.SearchResultsAdapter;
 import com.mridang.huntr.animations.ExpandAnimation;
 import com.mridang.huntr.enums.Category;
 import com.mridang.huntr.generics.Indexer;
-import com.mridang.huntr.plugins.Kickass;
-import com.mridang.huntr.plugins.Torleech;
+import com.mridang.huntr.search.Search;
+import com.mridang.huntr.search.adapters.SearchResultsAdapter;
+import com.mridang.huntr.search.plugins.Kickass;
+import com.mridang.huntr.search.plugins.Torleech;
 import com.mridang.huntr.structures.Torrent;
 
 /*

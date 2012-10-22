@@ -1,4 +1,4 @@
-package com.mridang.huntr;
+package com.mridang.huntr.search;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -28,15 +28,17 @@ import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.loopj.android.http.PersistentCookieStore;
-import com.mridang.huntr.adapters.SearchResultsAdapter;
+import com.mridang.huntr.R;
+import com.mridang.huntr.Settings;
 import com.mridang.huntr.asynctasks.Enqueuer;
-import com.mridang.huntr.asynctasks.Finder;
 import com.mridang.huntr.asynctasks.Viewer;
 import com.mridang.huntr.enums.Category;
-import com.mridang.huntr.managers.ResultsManager;
-import com.mridang.huntr.managers.ResultsManager.Filter;
-import com.mridang.huntr.managers.ResultsManager.Group;
-import com.mridang.huntr.managers.ResultsManager.Sort;
+import com.mridang.huntr.search.adapters.SearchResultsAdapter;
+import com.mridang.huntr.search.asynctasks.Finder;
+import com.mridang.huntr.search.managers.ResultsManager;
+import com.mridang.huntr.search.managers.ResultsManager.Filter;
+import com.mridang.huntr.search.managers.ResultsManager.Group;
+import com.mridang.huntr.search.managers.ResultsManager.Sort;
 
 /*
  * This class is the search activity and contains all the necessary

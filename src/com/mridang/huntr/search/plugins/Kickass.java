@@ -1,4 +1,4 @@
-package com.mridang.huntr.plugins;
+package com.mridang.huntr.search.plugins;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -12,11 +12,11 @@ import org.jsoup.nodes.Element;
 
 import android.util.Log;
 
-import com.mridang.huntr.Search;
 import com.mridang.huntr.enums.Category;
 import com.mridang.huntr.generics.Indexer;
 import com.mridang.huntr.helpers.DateConverter;
 import com.mridang.huntr.helpers.SizeConverter;
+import com.mridang.huntr.search.Search;
 import com.mridang.huntr.structures.Torrent;
 
 /*

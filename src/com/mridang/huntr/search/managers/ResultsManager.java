@@ -1,4 +1,4 @@
-package com.mridang.huntr.managers;
+package com.mridang.huntr.search.managers;
 
 import java.util.ArrayList;
 import java.util.Collections;

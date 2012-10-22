@@ -9,11 +9,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import android.content.Context;
 import android.util.Log;
 
-import com.mridang.huntr.Trend;
 import com.mridang.huntr.enums.Category;
-import com.mridang.huntr.generics.Aggregator;
+import com.mridang.huntr.generics.Indexer;
 import com.mridang.huntr.helpers.DateConverter;
 import com.mridang.huntr.helpers.SizeConverter;
 import com.mridang.huntr.structures.Torrent;
@@ -21,7 +21,7 @@ import com.mridang.huntr.structures.Torrent;
 /*
  * This class is used to search Fenopy Europe
  */
-public class Fenopy extends Aggregator {
+public class Fenopy extends Indexer {
 
 	/* The URL of the scrape page */
 	private final String SCRAPE_URL = "http://fenopy.eu/";
@@ -29,11 +29,11 @@ public class Fenopy extends Aggregator {
     /*
      * Initialises this task
      *
-     * @param  objContext  the instance of the calling Trend class
+     * @param  ctxContext  the context of the calling class
      */
-    public Fenopy(Trend objContext) {
+    public Fenopy(Context ctxContext) {
 
-        super(objContext);
+        super(ctxContext);
 
     }
 

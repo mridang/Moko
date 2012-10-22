@@ -21,10 +21,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.loopj.android.http.PersistentCookieStore;
-import com.mridang.huntr.Search;
 import com.mridang.huntr.structures.Torrent;
 
 /*
@@ -49,17 +49,17 @@ public class Indexer {
 
 	}
 
-	/* The instance of the calling class */
-    private Search objContext = null;
+	/* The context of the calling class */
+    private Context ctxContext = null;
 
     /*
      * Initializes this task
      *
      * @param  objContext  the instance of the calling Search class
      */
-	public Indexer(Search objContext) {
+	public Indexer(Context ctxContext) {
 
-		this.objContext = objContext;
+		this.ctxContext = ctxContext;
 
 	}
 
@@ -91,7 +91,7 @@ public class Indexer {
 				DefaultHttpClient dhcClient = new DefaultHttpClient();
 				dhcClient.addResponseInterceptor(new Decompressor(), 0);
 
-				PersistentCookieStore pscStore = new PersistentCookieStore(this.objContext);
+				PersistentCookieStore pscStore = new PersistentCookieStore(this.ctxContext);
 				dhcClient.setCookieStore(pscStore);
 
 				HttpResponse resResponse = dhcClient.execute(htpPost);
@@ -206,7 +206,7 @@ public class Indexer {
     			DefaultHttpClient dhcClient = new DefaultHttpClient();
     			dhcClient.addResponseInterceptor(new Decompressor(), 0);
 
-    			PersistentCookieStore pscStore = new PersistentCookieStore(this.objContext);
+    			PersistentCookieStore pscStore = new PersistentCookieStore(this.ctxContext);
     			dhcClient.setCookieStore(pscStore);
 
     			HttpResponse resResponse = dhcClient.execute(htpGet);
