@@ -23,7 +23,7 @@ public class ResultsManager {
 	 * The list of filtering options
 	 */
 	public static enum Filter {
-		ONLY_PRIVATE(), ONLY_PUBLIC, ONLY_HQ, ONLY_LQ
+		ONLY_PRIVATE, ONLY_PUBLIC, ONLY_HQ, ONLY_LQ
 	};
 
 	/*
