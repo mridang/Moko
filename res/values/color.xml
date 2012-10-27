@@ -12,7 +12,7 @@
     
     
     <color name="bg_pressed">@color/green</color>
-    <color name="green">#ff86b410</color>
+    <color name="green">#FF5236</color>
     <color name="bg_list">@color/bg_normal</color>
     <color name="bg_normal">#ffecebe8</color>
     <color name="bg_transparent">#00000000</color>
