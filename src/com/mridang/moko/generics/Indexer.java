@@ -18,6 +18,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.HttpEntityWrapper;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
@@ -83,12 +86,18 @@ public class Indexer {
 
             	String strResponse = null;
 
+            	HttpParams htpParameters = new BasicHttpParams();
+            	// Set the timeout in milliseconds until a connection is established.
+            	HttpConnectionParams.setConnectionTimeout(htpParameters, 10000);
+            	// Set the default socket timeout (SO_TIMEOUT) 
+            	HttpConnectionParams.setSoTimeout(htpParameters, 10000);                 	
+            	
 				HttpPost htpPost = new HttpPost(strUrl);
 				htpPost.setEntity(new UrlEncodedFormEntity(lstParams));
 				htpPost.addHeader("Accept-Encoding", "gzip");
 				htpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1");
 
-				DefaultHttpClient dhcClient = new DefaultHttpClient();
+				DefaultHttpClient dhcClient = new DefaultHttpClient(htpParameters);
 				dhcClient.addResponseInterceptor(new Decompressor(), 0);
 
 				PersistentCookieStore pscStore = new PersistentCookieStore(this.ctxContext);
@@ -199,11 +208,17 @@ public class Indexer {
 
             	String strResponse = null;
 
+            	HttpParams htpParameters = new BasicHttpParams();
+            	// Set the timeout in milliseconds until a connection is established.
+            	HttpConnectionParams.setConnectionTimeout(htpParameters, 10000);
+            	// Set the default socket timeout (SO_TIMEOUT) 
+            	HttpConnectionParams.setSoTimeout(htpParameters, 10000);            	
+            	
     			HttpGet htpGet = new HttpGet(strUrl);
     			htpGet.addHeader("Accept-Encoding", "gzip");
     			htpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1");
 
-    			DefaultHttpClient dhcClient = new DefaultHttpClient();
+    			DefaultHttpClient dhcClient = new DefaultHttpClient(htpParameters);
     			dhcClient.addResponseInterceptor(new Decompressor(), 0);
 
     			PersistentCookieStore pscStore = new PersistentCookieStore(this.ctxContext);
