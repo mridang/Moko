@@ -73,25 +73,21 @@ public class Finder extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 
 	    	    public ArrayList<Torrent> call() throws Exception {
 
+	    			Log.d("asynctasks.Finder", "Searching Torrentleech");
+	    			ArrayList<Torrent> objTorleechResults = new ArrayList<Torrent>();
+	    			
 	    	    	try {
 
-    	    			Log.d("asynctasks.Finder", "Searching Torrentleech");
-    	    			String strUsername = Finder.this.shpSettings.getString("torrentleech_username", null);
-    	    			String strPassword = Finder.this.shpSettings.getString("torrentleech_password", null);
+		    			String strUsername = Finder.this.shpSettings.getString("torrentleech_username", null);
+		    			String strPassword = Finder.this.shpSettings.getString("torrentleech_password", null);
     		    		Torleech objTorleech = new Torleech(Finder.this.objSearch);
-    		    		ArrayList<Torrent> objTorleechResults = new ArrayList<Torrent>();
-
     		    		objTorleechResults = objTorleech.doSearch(strQuery[0], Finder.this.enmCatergory, strUsername, strPassword);
 
-    		    		return objTorleechResults;
-
 	    	    	} catch (Indexer.LoginException e) {
-
 	    	    		Log.w("asynctask.Finder", "Error logging in to Torrentleech");
-
 	    	    	}
 
-					return null;
+					return objTorleechResults;
 
 	    	    }
 
@@ -105,22 +101,19 @@ public class Finder extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 
 	    	    public ArrayList<Torrent> call() throws Exception {
 
+    	    		Log.d("asynctasks.Finder", "Searching Kickass Torrents");
+    	    		ArrayList<Torrent> objKickassResults = new ArrayList<Torrent>();
+	    	    	
 	    	    	try {
 
-	    	    		Log.d("asynctasks.Finder", "Searching Kickass Torrents");
-			    		Kickass objKickass = new Kickass(Finder.this.objSearch);
-			    		ArrayList<Torrent> objKickassResults = new ArrayList<Torrent>();
+	    	    		Kickass objKickass = new Kickass(Finder.this.objSearch);
 			    		objKickassResults = objKickass.doSearch(strQuery[0], Finder.this.enmCatergory);
-			    		return objKickassResults;
-
 
 			    	} catch (Exception e) {
-
 			    		Log.w("asynctask.Finder", "Error logging in to KickassTorrents");
-
 			    	}
 
-			    	return null;
+			    	return objKickassResults;
 
 	    	    }
 
