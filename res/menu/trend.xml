@@ -25,11 +25,4 @@
         android:icon="@android:drawable/ic_menu_search"
         android:showAsAction="ifRoom"
         android:title="Search"/>
-    
-    <item
-        android:id="@+id/refresh"
-        android:icon="@drawable/ic_menu_refresh"
-        android:showAsAction="ifRoom"
-        android:title="Refresh"/>
-    
 </menu>
