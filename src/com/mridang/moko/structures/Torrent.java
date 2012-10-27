@@ -1,5 +1,6 @@
 package com.mridang.moko.structures;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.util.Date;
 
@@ -10,9 +11,13 @@ import com.mridang.moko.interfaces.Row;
  * This class is used like a structure to contain a
  * result item. We can also serialise this.
  */
-public class Torrent implements Row {
+public class Torrent implements Row, Serializable {
 
     /*
+     * A serialization identifier
+     */
+	private static final long serialVersionUID = -2977539441063094354L;
+	/*
      * The name of the torrent
      */
     private final String strName;

@@ -1,6 +1,13 @@
 package com.mridang.moko.asynctasks;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,6 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -54,9 +62,32 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 	/*
 	 * @see android.os.AsyncTask#doInBackground(Params[])
 	 */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     protected ArrayList<Torrent> doInBackground(String... strQuery) {
 
+        // Let's load the data from a serialized format if it already exists
+        try {
+
+        	DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
+        	String strFilename = dftFormat.format(new Date());
+        	
+            if(this.objTrend.getApplicationContext().getFileStreamPath(strFilename).exists()) {
+
+                FileInputStream fisSerialize = this.objTrend.getApplicationContext().openFileInput(strFilename);
+                ObjectInputStream oisSerialize = new ObjectInputStream(fisSerialize);
+                ArrayList<Torrent> lstTorrents = (ArrayList<Torrent>) oisSerialize.readObject();
+                oisSerialize.close();
+                fisSerialize.close();
+
+                return lstTorrents;
+
+            }
+
+        } catch (Exception e) {
+            //Do nothing
+        }	
+    	
     	ArrayList<Torrent> objTorrents = new ArrayList<Torrent>();
     	ExecutorService esrExecutor = Executors.newFixedThreadPool(2);
     	Set<Callable<ArrayList<Torrent>>> setCallables = new HashSet<Callable<ArrayList<Torrent>>>();
@@ -142,6 +173,25 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 
 		esrExecutor.shutdown();
 
+        // Let's save the data in a serialized format if it doesn't exist
+        try {
+
+        	DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
+        	String strFilename = dftFormat.format(new Date());
+        	
+            if(!this.objTrend.getApplicationContext().getFileStreamPath(strFilename).exists()) {
+                FileOutputStream fosSerialize = this.objTrend.getApplicationContext().openFileOutput(strFilename, Context.MODE_PRIVATE);
+                ObjectOutputStream oosSerialize = new ObjectOutputStream(fosSerialize);
+                oosSerialize.writeObject(objTorrents);
+                oosSerialize.close();
+                fosSerialize.close();
+
+            }
+
+        } catch (Exception e) {
+            //Do nothing
+        }
+		
 		return objTorrents;
 
     }
