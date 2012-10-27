@@ -200,7 +200,6 @@ public class Finder extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 	    	ListView lvwResults = (ListView) this.objSearch.findViewById(R.id.results);
 	    	this.objSearch.objAdapter = new SearchResultsAdapter(this.objSearch, objResults);
 	    	lvwResults.setAdapter(this.objSearch.objAdapter);
-	    	this.objSearch.invalidateOptionsMenu();
 
 	    	lvwResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

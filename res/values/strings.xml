@@ -2,7 +2,7 @@
 
     <!-- String for activity and application titles -->
     <string name="app_name">Moko</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main"></string>
     <string name="title_activity_feed">Moko</string>
 
     <!-- Strings for the categories -->

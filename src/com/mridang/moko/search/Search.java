@@ -114,9 +114,11 @@ public class Search extends Activity {
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
+        searchView.setIconified(false);
         if (this.objAdapter == null) {
-            searchView.setIconified(false);
             searchView.requestFocusFromTouch();
+        } else {
+            searchView.clearFocus();
         }
 
         return true;
@@ -130,13 +132,13 @@ public class Search extends Activity {
     public boolean onPrepareOptionsMenu (Menu menu) {
 
     	if (this.objAdapter == null) {
-        	menu.findItem(R.id.sort).setVisible(false);
-        	menu.findItem(R.id.filter).setVisible(false);
-        	menu.findItem(R.id.group).setVisible(false);
+        	menu.findItem(R.id.sort).setEnabled(false);
+        	menu.findItem(R.id.filter).setEnabled(false);
+        	menu.findItem(R.id.group).setEnabled(false);
         } else {
-        	menu.findItem(R.id.sort).setVisible(true);
-        	menu.findItem(R.id.filter).setVisible(true);
-        	menu.findItem(R.id.group).setVisible(true);
+        	menu.findItem(R.id.sort).setEnabled(true);
+        	menu.findItem(R.id.filter).setEnabled(true);
+        	menu.findItem(R.id.group).setEnabled(true);
 
         }
 
