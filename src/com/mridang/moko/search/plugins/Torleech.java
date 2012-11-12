@@ -14,6 +14,7 @@ import org.jsoup.nodes.Element;
 
 import android.util.Log;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.mridang.moko.enums.Category;
 import com.mridang.moko.generics.Indexer;
 import com.mridang.moko.helpers.SizeConverter;
@@ -317,6 +318,7 @@ public class Torleech extends Indexer {
 
 			} catch (Exception e) {
 
+			    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 				Log.w("plugins.Torleech", "Error parsing row", e);
 
 			}

@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 
 import android.util.Log;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.mridang.moko.enums.Category;
 import com.mridang.moko.generics.Indexer;
 import com.mridang.moko.helpers.DateConverter;
@@ -189,6 +190,7 @@ public class Kickass extends Indexer  {
 
 			} catch (Exception e) {
 
+			    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 				Log.w("plugins.Kickass", "Error parsing row", e);
 
 			}
