@@ -79,11 +79,10 @@ public class Trend extends Activity {
 
         public void onClick(View vewView) {
 
-            Intent ittShare = new Intent(
-                    "android.intent.action.SEND");
+            EasyTracker.getTracker().trackEvent("OnClicks", "Share", "Share Torrent", null);
+            Intent ittShare = new Intent("android.intent.action.SEND");
             ittShare.setType("text/plain");
-            ittShare.putExtra("android.intent.extra.TEXT",
-                    ((URI) vewView.getTag()).toString());
+            ittShare.putExtra("android.intent.extra.TEXT", ((URI) vewView.getTag()).toString());
             startActivity(Intent.createChooser(ittShare, "Share using"));
 
         }
@@ -97,6 +96,7 @@ public class Trend extends Activity {
 
         public void onClick(View vewView) {
 
+            EasyTracker.getTracker().trackEvent("OnClicks", "Enqueue", "Enqueue Torrent", null);
             new Enqueuer(Trend.this).execute((URI) vewView.getTag());
 
         }
@@ -117,6 +117,17 @@ public class Trend extends Activity {
     }
 
     /*
+     * @see android.app.Activity#onStart()
+     */
+    @Override
+    public void onStart() {
+
+    	super.onStart();
+    	EasyTracker.getInstance().activityStart(this);
+
+    }
+
+    /*
      * This method scrapes the sites for the trending torrents
      */
     public void scrapeTorrents() {
@@ -129,6 +140,7 @@ public class Trend extends Activity {
     /*
      * @see android.app.Activity.onOptionsItemSelected
      */
+
     @Override
     public boolean onOptionsItemSelected(MenuItem itmMenuitem) {
 
@@ -310,6 +322,7 @@ public class Trend extends Activity {
 
         public void onClick(View vewView) {
 
+            EasyTracker.getTracker().trackEvent("OnClicks", "Website", "View Webpage", null);
             new Viewer(Trend.this).execute((URI) vewView.getTag());
 
         }
@@ -332,6 +345,17 @@ public class Trend extends Activity {
         }
 
     };
+
+    /*
+     * @see com.actionbarsherlock.app.SherlockActivity#onStop()
+     */
+    @Override
+    public void onStop() {
+
+      super.onStop();
+      EasyTracker.getInstance().activityStop(this);
+
+    }
 
     /*
      * @see android.app.Activity#onDestroy()

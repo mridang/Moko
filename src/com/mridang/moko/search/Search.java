@@ -27,6 +27,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.loopj.android.http.PersistentCookieStore;
 import com.mridang.moko.R;
 import com.mridang.moko.Settings;
@@ -102,6 +103,17 @@ public class Search extends Activity {
     }
 
     /*
+     * @see android.app.Activity#onStart()
+     */
+    @Override
+    public void onStart() {
+
+      super.onStart();
+      EasyTracker.getInstance().activityStart(this);
+
+    }
+
+    /*
      * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
      */
     @Override
@@ -165,6 +177,7 @@ public class Search extends Activity {
 
     	public void onClick(View vewView) {
 
+    	    EasyTracker.getTracker().trackEvent("OnClicks", "Share", "Share Torrent", null);
 			Intent sharingIntent = new Intent(Intent.ACTION_SEND);
 			sharingIntent.setType("text/plain");
 			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, ((URI) vewView.getTag()).toString());
@@ -181,6 +194,7 @@ public class Search extends Activity {
 
 		public void onClick(View vewView) {
 
+		    EasyTracker.getTracker().trackEvent("OnClicks", "Enqueue", "Enqueue Torrent", null);
 			new Enqueuer(Search.this).execute((URI) vewView.getTag());
 
 		}
@@ -197,36 +211,42 @@ public class Search extends Activity {
         if  (Search.SEARCH_MOVIES.equals(intent.getAction())) {
 
         	this.objFinder = new Finder(this, Category.MOVIE);
+        	EasyTracker.getTracker().trackEvent("OnClicks", "Search", "Find Movies", null);
         	this.objFinder.execute(intent.getStringExtra(SearchManager.QUERY));
         	return;
 
         } else if (Search.SEARCH_MUSIC.equals(intent.getAction())) {
 
             this.objFinder = new Finder(this, Category.ALBUM);
+            EasyTracker.getTracker().trackEvent("OnClicks", "Search", "Find Albums", null);
             this.objFinder.execute(intent.getStringExtra(SearchManager.QUERY));
         	return;
 
         } else if (Search.SEARCH_GAMES.equals(intent.getAction())) {
 
             this.objFinder = new Finder(this, Category.GAME);
+            EasyTracker.getTracker().trackEvent("OnClicks", "Search", "Find Games", null);
             this.objFinder.execute(intent.getStringExtra(SearchManager.QUERY));
         	return;
 
         } else if (Search.SEARCH_SHOWS.equals(intent.getAction())) {
 
             this.objFinder = new Finder(this, Category.SHOW);
+            EasyTracker.getTracker().trackEvent("OnClicks", "Search", "Find Shows", null);
             this.objFinder.execute(intent.getStringExtra(SearchManager.QUERY));
         	return;
 
         } else if (Search.SEARCH_APPS.equals(intent.getAction())) {
 
             this.objFinder = new Finder(this, Category.APP);
+            EasyTracker.getTracker().trackEvent("OnClicks", "Search", "Find Applications", null);
             this.objFinder.execute(intent.getStringExtra(SearchManager.QUERY));
         	return;
 
         } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 
             this.objFinder = new Finder(this, Category.EVERYTHING);
+            EasyTracker.getTracker().trackEvent("OnClicks", "Search", "Find Everything", null);
             this.objFinder.execute(intent.getStringExtra(SearchManager.QUERY));
             return;
 
@@ -399,6 +419,7 @@ public class Search extends Activity {
 
     	public void onClick(View vewView) {
 
+    	    EasyTracker.getTracker().trackEvent("OnClicks", "Website", "View Webpage", null);
     		new Viewer(Search.this).execute((URI) vewView.getTag());
 
     	}
@@ -412,10 +433,11 @@ public class Search extends Activity {
 
     	public void onClick(View vewView) {
 
+    	    EasyTracker.getTracker().trackEvent("OnClicks", "Download", "Download Torrent", null);
             Request rqtRequest = new Request(Uri.parse(((URI) vewView.getTag()).toString()));
             for (Cookie cooCookie : (new PersistentCookieStore(Search.this)).getCookies())
             	rqtRequest.addRequestHeader(cooCookie.getName(), cooCookie.getValue());
-            rqtRequest.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            //rqtRequest.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //TODO Fix
             ((DownloadManager) getSystemService(DOWNLOAD_SERVICE)).enqueue(rqtRequest);
 
     	}
@@ -429,6 +451,17 @@ public class Search extends Activity {
     protected void onNewIntent(Intent intent) {
 
     	handleIntent(intent);
+
+    }
+
+    /*
+     * @see com.actionbarsherlock.app.SherlockActivity#onStop()
+     */
+    @Override
+    public void onStop() {
+
+      super.onStop();
+      EasyTracker.getInstance().activityStop(this);
 
     }
 
