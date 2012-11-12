@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.mridang.moko.R;
 import com.mridang.moko.Trend;
 import com.mridang.moko.adapters.TrendingTorrentsAdapter;
@@ -58,6 +59,10 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
      * The instance of the annimator that animates the toolbar
      */
     private ExpandAnimation objExpander;
+    /*
+     * The time taken to execute
+     */
+    private Long lngTiming;
 
 	/*
 	 * @see android.os.AsyncTask#doInBackground(Params[])
@@ -71,7 +76,7 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 
         	DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
         	String strFilename = dftFormat.format(new Date());
-        	
+
             if(this.objTrend.getApplicationContext().getFileStreamPath(strFilename).exists()) {
 
                 FileInputStream fisSerialize = this.objTrend.getApplicationContext().openFileInput(strFilename);
@@ -86,8 +91,8 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 
         } catch (Exception e) {
             //Do nothing
-        }	
-    	
+        }
+
     	ArrayList<Torrent> objTorrents = new ArrayList<Torrent>();
     	ExecutorService esrExecutor = Executors.newFixedThreadPool(2);
     	Set<Callable<ArrayList<Torrent>>> setCallables = new HashSet<Callable<ArrayList<Torrent>>>();
@@ -178,7 +183,7 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 
         	DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
         	String strFilename = dftFormat.format(new Date());
-        	
+
             if(!this.objTrend.getApplicationContext().getFileStreamPath(strFilename).exists()) {
                 FileOutputStream fosSerialize = this.objTrend.getApplicationContext().openFileOutput(strFilename, Context.MODE_PRIVATE);
                 ObjectOutputStream oosSerialize = new ObjectOutputStream(fosSerialize);
@@ -191,7 +196,7 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
         } catch (Exception e) {
             //Do nothing
         }
-		
+
 		return objTorrents;
 
     }
@@ -203,6 +208,7 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
     protected void onPreExecute() {
 
     	this.objTrend.showProgress();
+    	this.lngTiming = System.nanoTime();
 
     }
 
@@ -226,6 +232,9 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
     protected void onPostExecute(ArrayList<Torrent> objTorrents) {
 
     	this.objTrend.hideProgress();
+    	this.lngTiming = System.nanoTime() - this.lngTiming;
+
+    	EasyTracker.getTracker().trackTiming("AsyncTasks", this.lngTiming, "Scraper", "Get Trending Torrents");
 
     	if (objTorrents.size() == 0) {
 
@@ -238,7 +247,7 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 	    	ListView lvwTorrents = (ListView) this.objTrend.findViewById(R.id.torrents);
 	    	this.objTrend.objAdapter = new TrendingTorrentsAdapter(this.objTrend, objTorrents);
 	    	lvwTorrents.setAdapter(this.objTrend.objAdapter);
-	    	this.objTrend.invalidateOptionsMenu();
+	    	//this.objTrend.invalidateOptionsMenu(); //TODO
 
 	    	lvwTorrents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

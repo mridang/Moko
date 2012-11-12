@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.mridang.moko.R;
 import com.mridang.moko.animations.ExpandAnimation;
 import com.mridang.moko.enums.Category;
@@ -56,6 +57,10 @@ public class Finder extends AsyncTask<String, Integer, ArrayList<Torrent>> {
      * The instance of the annimator that animates the toolbar
      */
     private ExpandAnimation objExpander;
+    /*
+     * The time taken to execute
+     */
+    private Long lngTiming;
 
 	/*
 	 * @see android.os.AsyncTask#doInBackground(Params[])
@@ -75,7 +80,7 @@ public class Finder extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 
 	    			Log.d("asynctasks.Finder", "Searching Torrentleech");
 	    			ArrayList<Torrent> objTorleechResults = new ArrayList<Torrent>();
-	    			
+
 	    	    	try {
 
 		    			String strUsername = Finder.this.shpSettings.getString("torrentleech_username", null);
@@ -103,7 +108,7 @@ public class Finder extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 
     	    		Log.d("asynctasks.Finder", "Searching Kickass Torrents");
     	    		ArrayList<Torrent> objKickassResults = new ArrayList<Torrent>();
-	    	    	
+
 	    	    	try {
 
 	    	    		Kickass objKickass = new Kickass(Finder.this.objSearch);
@@ -157,6 +162,7 @@ public class Finder extends AsyncTask<String, Integer, ArrayList<Torrent>> {
     protected void onPreExecute() {
 
     	this.objSearch.showProgress();
+    	this.lngTiming = System.nanoTime();
 
     }
 
@@ -181,6 +187,9 @@ public class Finder extends AsyncTask<String, Integer, ArrayList<Torrent>> {
     protected void onPostExecute(ArrayList<Torrent> objResults) {
 
     	this.objSearch.hideProgress();
+        this.lngTiming = System.nanoTime() - this.lngTiming;
+
+        EasyTracker.getTracker().trackTiming("AsyncTasks", this.lngTiming, "Finder", "Get Searched Torrents");
 
     	if (objResults.size() == 0) {
 
