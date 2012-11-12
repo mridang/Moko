@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import org.apache.http.cookie.Cookie;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.DownloadManager.Request;
@@ -14,16 +13,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.bugsense.trace.BugSenseHandler;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.loopj.android.http.PersistentCookieStore;
 import com.mridang.moko.adapters.TrendingTorrentsAdapter;
 import com.mridang.moko.asynctasks.Enqueuer;
@@ -36,7 +38,7 @@ import com.mridang.moko.managers.TrendingManager.Sort;
 import com.mridang.moko.search.Search;
 import com.mridang.moko.search.managers.ResultsManager;
 
-public class Trend extends Activity {
+public class Trend extends SherlockActivity {
 
     /*
      * The trending torrents adapter that will power the listview
@@ -112,6 +114,10 @@ public class Trend extends Activity {
         super.onCreate(savedInstanceState);
         BugSenseHandler.initAndStartSession(this, "da66b24c");
         setContentView(R.layout.trend);
+
+        ActionBar abrAction = getSupportActionBar();
+        abrAction.setDisplayHomeAsUpEnabled(false);
+
         scrapeTorrents();
 
     }
@@ -289,7 +295,7 @@ public class Trend extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.trend, menu);
 
         return true;
@@ -336,10 +342,11 @@ public class Trend extends Activity {
 
         public void onClick(View vewView) {
 
+            EasyTracker.getTracker().trackEvent("OnClicks", "Download", "Download Torrent", null);
             Request rqtRequest = new Request(Uri.parse(((URI) vewView.getTag()).toString()));
             for (Cookie cooCookie : (new PersistentCookieStore(Trend.this)).getCookies())
                 rqtRequest.addRequestHeader(cooCookie.getName(), cooCookie.getValue());
-            rqtRequest.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            //rqtRequest.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //TODO Fix
             ((DownloadManager) getSystemService(DOWNLOAD_SERVICE)).enqueue(rqtRequest);
 
         }
