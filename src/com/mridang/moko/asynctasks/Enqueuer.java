@@ -6,7 +6,6 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +17,6 @@ import android.util.Log;
  * It is used a asynchronous activity so that it does not hold
  * up the main UI thread.
  */
-@SuppressLint("WorldReadableFiles")
 public class Enqueuer extends AsyncTask<URI, Integer, URI> {
 
 	/*

@@ -4,7 +4,6 @@ import java.net.URI;
 
 import org.apache.http.cookie.Cookie;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,7 +20,6 @@ import com.loopj.android.http.PersistentCookieStore;
  * It is used a asynchronous activity so that it does not hold
  * up the main UI thread.
  */
-@SuppressLint("SetJavaScriptEnabled")
 public class Viewer extends AsyncTask<URI, Integer, URI> {
 
 	/*
