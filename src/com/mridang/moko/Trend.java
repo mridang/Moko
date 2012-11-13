@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask.Status;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -342,12 +343,18 @@ public class Trend extends SherlockActivity {
 
         public void onClick(View vewView) {
 
+            Trend.this.showProgress();
             EasyTracker.getTracker().trackEvent("OnClicks", "Download", "Download Torrent", null);
             Request rqtRequest = new Request(Uri.parse(((URI) vewView.getTag()).toString()));
             for (Cookie cooCookie : (new PersistentCookieStore(Trend.this)).getCookies())
                 rqtRequest.addRequestHeader(cooCookie.getName(), cooCookie.getValue());
-            //rqtRequest.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //TODO Fix
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                rqtRequest.setShowRunningNotification(true);  
+            } else {
+                rqtRequest.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            }
             ((DownloadManager) getSystemService(DOWNLOAD_SERVICE)).enqueue(rqtRequest);
+            Trend.this.hideProgress();
 
         }
 
