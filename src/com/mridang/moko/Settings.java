@@ -1,11 +1,11 @@
 package com.mridang.moko;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.mridang.moko.fragments.Preferences;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-public class Settings extends Activity {
+public class Settings extends SherlockActivity {
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
