@@ -112,12 +112,11 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 	    				return objKickassTorrents;
 
 			    	} catch (Exception e) {
-
 			    		Log.w("asynctask.Scraper", "Error scraping from Kickass Torrents");
-
+			    		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 			    	}
 
-			    	return null;
+			    	return new ArrayList<Torrent>();
 
 	    	    }
 
@@ -140,12 +139,11 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 	    				return objFenopyTorrents;
 
 			    	} catch (Exception e) {
-
 			    		Log.w("asynctask.Scraper", "Error scraping from Fenopy Europe");
-
+			    		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 			    	}
 
-			    	return null;
+			    	return new ArrayList<Torrent>();
 
 	    	    }
 

@@ -90,6 +90,7 @@ public class Finder extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 
 	    	    	} catch (Indexer.LoginException e) {
 	    	    		Log.w("asynctask.Finder", "Error logging in to Torrentleech");
+	    	    		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 	    	    	}
 
 					return objTorleechResults;
@@ -116,6 +117,7 @@ public class Finder extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 
 			    	} catch (Exception e) {
 			    		Log.w("asynctask.Finder", "Error logging in to KickassTorrents");
+			    		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 			    	}
 
 			    	return objKickassResults;
@@ -140,13 +142,9 @@ public class Finder extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 			}
 
 		} catch (InterruptedException e) {
-
 			e.printStackTrace();
-
 		} catch (ExecutionException e) {
-
 			e.printStackTrace();
-
 		}
 
 		esrExecutor.shutdown();
