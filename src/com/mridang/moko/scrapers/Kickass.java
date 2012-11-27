@@ -59,7 +59,6 @@ public class Kickass extends Indexer {
 
 		} catch (Exception e) {
 
-		    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 			Log.w("scrapers.Kickass", "Error fetching and parsing page", e);
 			throw e;
 

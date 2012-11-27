@@ -203,7 +203,6 @@ public class Torleech extends Indexer {
 
 		} catch (Exception e) {
 
-		    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 			Log.w("plugins.Torleech", "Error fetching and parsing page", e);
 			throw e;
 
@@ -226,7 +225,6 @@ public class Torleech extends Indexer {
 
 			} catch (Exception e) {
 
-			    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 				Log.w("plugins.Torleech", "Error fetching and parsing page", e);
 				throw e;
 
