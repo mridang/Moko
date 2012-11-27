@@ -152,9 +152,7 @@ public class Torleech extends Indexer {
 	 * @param  strPassword The password to use for logging in
 	 * @return A list of results scraped from the site.
 	 */
-	public ArrayList<Torrent> doSearch(String strQuery, Category catSection,
-			String strUsername, String strPassword)
-			throws Indexer.LoginException {
+	public ArrayList<Torrent> doSearch(String strQuery, Category catSection, String strUsername, String strPassword) throws Exception {
 
 		Document objDocument;
 		ArrayList<Torrent> objResults = new ArrayList<Torrent>();
@@ -205,8 +203,9 @@ public class Torleech extends Indexer {
 
 		} catch (Exception e) {
 
+		    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 			Log.w("plugins.Torleech", "Error fetching and parsing page", e);
-			return null;
+			throw e;
 
 		}
 
@@ -227,8 +226,9 @@ public class Torleech extends Indexer {
 
 			} catch (Exception e) {
 
+			    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 				Log.w("plugins.Torleech", "Error fetching and parsing page", e);
-				return null;
+				throw e;
 
 			}
 

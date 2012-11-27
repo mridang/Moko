@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.mridang.moko.enums.Category;
 import com.mridang.moko.generics.Indexer;
 import com.mridang.moko.helpers.DateConverter;
@@ -42,7 +43,7 @@ public class Kickass extends Indexer {
 	 *
 	 * @return a list of torrents.
 	 */
-	public ArrayList<Torrent> doScrape() {
+	public ArrayList<Torrent> doScrape() throws Exception {
 
 		Document objDocument;
 		ArrayList<Torrent> objTorrents = new ArrayList<Torrent>();
@@ -58,8 +59,9 @@ public class Kickass extends Indexer {
 
 		} catch (Exception e) {
 
+		    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 			Log.w("scrapers.Kickass", "Error fetching and parsing page", e);
-			return null;
+			throw e;
 
 		}
 
@@ -158,6 +160,7 @@ public class Kickass extends Indexer {
 
 				} catch (Exception e) {
 
+				    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 					Log.w("scrapers.Kickass", "Error parsing row", e);
 
 				}

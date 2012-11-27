@@ -47,7 +47,7 @@ public class Kickass extends Indexer  {
 	 *
 	 * @return a list of results.
 	 */
-	public ArrayList<Torrent> doSearch(String strQuery, Category catSection) {
+	public ArrayList<Torrent> doSearch(String strQuery, Category catSection) throws Exception {
 
 		Document objDocument;
 		ArrayList<Torrent> objResults = new ArrayList<Torrent>();
@@ -98,8 +98,9 @@ public class Kickass extends Indexer  {
 
 		} catch (Exception e) {
 
+		    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 			Log.w("plugins.Kickass", "Error fetching and parsing page", e);
-			return null;
+			throw e;
 
 		}
 
