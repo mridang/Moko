@@ -73,5 +73,7 @@
     <string name="no_results_found">No results found. Please try a different search.</string>
     <string name="unable_to_fetch">Unable to fetch the latest trending torrents.</string>
     <string name="nothing_after_filtering">There were no results after filtering. Please choose a different filter.</string>
+    <string name="something_went_wrong">Uh oh! Something went wrong. Please try again.</string>
+    <string name="no_torrent_handlers">You don\'t seem to have any apps to handle torrent files. Please download one from the Play store and then try again.</string>
     
 </resources>
