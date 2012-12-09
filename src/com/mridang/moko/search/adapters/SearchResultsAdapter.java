@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class SearchResultsAdapter extends BaseAdapter {
         public Button btnDownload;
         public Button btnShare;
         public LinearLayout lltEnqueuer;
+        public LinearLayout lltDownloader;
         public Button btnEnqueue;
         public Button btnWebsite;
         public View vewToolbar;
@@ -193,6 +195,7 @@ public class SearchResultsAdapter extends BaseAdapter {
                 objHolder.tvwLeechers = (TextView) vewView.findViewById(R.id.leechers);
                 objHolder.tvwSize = (TextView) vewView.findViewById(R.id.filesize);
                 objHolder.btnDownload = (Button) vewView.findViewById(R.id.download);
+                objHolder.lltDownloader = (LinearLayout) vewView.findViewById(R.id.downloader);
                 objHolder.btnShare = (Button) vewView.findViewById(R.id.share);
                 objHolder.btnEnqueue = (Button) vewView.findViewById(R.id.enqueue);
                 objHolder.lltEnqueuer = (LinearLayout) vewView.findViewById(R.id.enqueuer);
@@ -217,11 +220,12 @@ public class SearchResultsAdapter extends BaseAdapter {
             objHolder.tvwSize.setText(SizeConverter.printSize(objResult.getSize()));
             objHolder.btnDownload.setOnClickListener(this.ctxContext.oclDownload);
             objHolder.btnDownload.setTag(objResult.getLocation());
+            objHolder.lltDownloader.setVisibility(Build.VERSION.SDK_INT == Build.VERSION_CODES.FROYO ? View.GONE : View.VISIBLE);
             objHolder.btnShare.setOnClickListener(this.ctxContext.oclShare);
             objHolder.btnShare.setTag(objResult.getWebpage());
             objHolder.btnEnqueue.setOnClickListener(this.ctxContext.oclEnqueue);
             objHolder.btnEnqueue.setTag(objResult.getLocation());
-            objHolder.lltEnqueuer.setVisibility(this.booHasEnqueuer ? View.VISIBLE : View.GONE);
+            objHolder.lltEnqueuer.setVisibility(View.VISIBLE);
             objHolder.btnWebsite.setOnClickListener(this.ctxContext.oclWebsite);
             objHolder.btnWebsite.setTag(objResult.getWebpage());
             if (objResult.isExpanded()) {
