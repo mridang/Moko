@@ -5,6 +5,7 @@ import java.net.URI;
 import org.apache.http.cookie.Cookie;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.loopj.android.http.PersistentCookieStore;
 
 /*
@@ -23,12 +25,12 @@ import com.loopj.android.http.PersistentCookieStore;
 public class Viewer extends AsyncTask<URI, Integer, URI> {
 
 	/*
-	 * The instance of the calling class
+	 * The context of the calling activity
 	 */
-    private Activity objContext = null;
+    private Context ctxContext = null;
 
 	/*
-	 * @see android.os.AsyncTask#doInBs[])
+	 * @see android.os.AsyncTask#doInBackground(Params[])
 	 */
     @Override
     protected URI doInBackground(URI... uriWebpage) {
@@ -37,17 +39,20 @@ public class Viewer extends AsyncTask<URI, Integer, URI> {
 
     	try {
 
-            CookieSyncManager.createInstance(this.objContext);
+            CookieSyncManager.createInstance(this.ctxContext);
 
             CookieManager cmrCookies = CookieManager.getInstance();
+            if (cmrCookies.hasCookies() == false) {
+            	cmrCookies.removeExpiredCookie();
+            } else {
+            	cmrCookies.removeAllCookie();
+            }
             cmrCookies.removeSessionCookie();
             cmrCookies.acceptCookie();
 
-            PersistentCookieStore pscJar = new PersistentCookieStore(this.objContext);
+            PersistentCookieStore pscJar = new PersistentCookieStore(this.ctxContext);
     	    SystemClock.sleep(1000);
 
-    	    //byte[] buffer = new byte[1024];
-    	    //Cookie cooCookie = null;
             for (Cookie cooCookie : pscJar.getCookies())
             	cmrCookies.setCookie(cooCookie.getName(), cooCookie.getValue());
 
@@ -56,9 +61,8 @@ public class Viewer extends AsyncTask<URI, Integer, URI> {
     	    return uriWebpage[0];
 
     	} catch (Exception e) {
-
     		e.printStackTrace();
-
+    		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
     	}
 
 		return null;
@@ -72,7 +76,7 @@ public class Viewer extends AsyncTask<URI, Integer, URI> {
      */
     public Viewer(Activity objContext) {
 
-    	this.objContext = objContext;
+    	this.ctxContext = objContext;
 
     }
 
@@ -84,7 +88,7 @@ public class Viewer extends AsyncTask<URI, Integer, URI> {
 
 	    Intent ittWebview = new Intent("android.intent.action.VIEW");
 	    ittWebview.setData(Uri.parse(uriWebpage.toString()));
-	    this.objContext.startActivity(ittWebview);
+	    this.ctxContext.startActivity(ittWebview);
 
     }
 
