@@ -110,16 +110,12 @@ public class Indexer {
 
 		    } catch (Exception e) {
 
-		    	//TODO Handle the 404 and 500 Exceptions
+		    	e.printStackTrace();
 
 		        if (intTry < 3) {
-
 		        	Log.v("generics.Indexer", String.format("Attempt #%d", intTry));
-
 		         } else {
-
 		        	 throw e;
-
 		         }
 
 		    }
@@ -231,16 +227,12 @@ public class Indexer {
 
             } catch (Exception e) {
 
-            	//TODO Handle the 404 and 500 Exceptions
+            	e.printStackTrace();
 
                 if (intTry < 3) {
-
                 	Log.v("generics.Indexer", String.format("Attempt #%d", intTry));
-
                  } else {
-
                 	 throw e;
-
                  }
 
             }
