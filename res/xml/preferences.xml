@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="@string/torrentleech" android:summary="@string/configure_your_torrentleech_credentials" android:key="torrentleech">
+    <PreferenceCategory 
+        android:title="@string/torrentleech" 
+        android:summary="@string/configure_your_torrentleech_credentials" 
+        android:key="torrentleech">
+
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="use_torrentleech"
@@ -24,7 +28,11 @@
             android:summary="@string/enter_your_password"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/kickasstorrents" android:summary="@string/configure_your_kickasstorrents_options" android:key="kickasstorrents">
+    <PreferenceCategory 
+        android:title="@string/kickasstorrents" 
+        android:summary="@string/configure_your_kickasstorrents_options" 
+        android:key="kickasstorrents">
+        
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="use_kickasstorrents"
@@ -32,12 +40,29 @@
             android:summary="@string/check_this_to_use_this_service"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/fenopytorrents" android:summary="@string/configure_your_fenopytorrents_options" android:key="fenopytorrents">
+    <PreferenceCategory 
+        android:title="@string/fenopytorrents" 
+        android:summary="@string/configure_your_fenopytorrents_options" 
+        android:key="fenopytorrents">
+        
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="use_fenopytorrents"
             android:title="@string/use" 
             android:summary="@string/check_this_to_use_this_service"/>
     </PreferenceCategory>    
+    
+    <PreferenceCategory 
+        android:title="@string/rationotifications" 
+        android:summary="@string/configure_your_notification_options" 
+        android:key="rationotifications">
+        
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="show_tracker_ratios"
+            android:title="@string/use" 
+            android:summary="@string/check_this_to_always_show_the_ratio"/>
+        
+    </PreferenceCategory> 
     
 </PreferenceScreen>
