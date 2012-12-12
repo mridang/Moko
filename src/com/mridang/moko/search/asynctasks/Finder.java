@@ -83,15 +83,12 @@ public class Finder extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 
 	    	    	try {
 
-		    			String strUsername = Finder.this.shpSettings.getString("torrentleech_username", null);
-		    			String strPassword = Finder.this.shpSettings.getString("torrentleech_password", null);
     		    		Torleech objTorleech = new Torleech(Finder.this.objSearch);
-    		    		objTorleechResults = objTorleech.doSearch(strQuery[0], Finder.this.enmCatergory, strUsername, strPassword);
+    		    		objTorleechResults = objTorleech.doSearch(strQuery[0], Finder.this.enmCatergory);
 
 	    	    	} catch (Indexer.LoginException e) {
 	    	    		Log.w("asynctask.Finder", "Error logging in to Torrentleech");
 	    	    		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
-	    	    		//TODO: Show message to the user that we were unable to query this site.
 	    	    	}
 
 					return objTorleechResults;
