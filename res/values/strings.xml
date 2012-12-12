@@ -4,6 +4,8 @@
     <string name="app_name">Moko</string>
     <string name="title_activity_main"></string>
     <string name="title_activity_feed">Moko</string>
+    <string name="your_ratio_is">Your ratio is %.3f.</string>
+    <string name="logged_in_to">Logged in to %s.</string>
 
     <!-- Strings for the categories -->
     <string name="movies">Movies</string>
@@ -41,9 +43,12 @@
     <string name="check_this_to_use_this_service">Check this to use this service</string>
     <string name="enter_your_password">Enter your password</string>
     <string name="password">Password</string>
-    <string name="configure_your_kickasstorrents_options">Configure your Kickass Torrent options</string>    
+    <string name="configure_your_kickasstorrents_options">Configure your Kickass Torrent options</string>
     <string name="kickasstorrents">Kickass Torrents</string>
-    
+    <string name="check_this_to_always_show_the_ratio">Check this to show an ongoing notfication with your private tracker ratios.</string>
+    <string name="rationotifications">Ratio Notifications</string>
+    <string name="configure_your_notification_options">Configure your notification options</string>
+
     <!-- Strings for the popup menu options -->
     <string name="sort">Sort</string>
     <string name="filter">Filter</string>
