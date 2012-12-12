@@ -50,7 +50,16 @@
 
         <meta-data
             android:name="android.app.default_searchable"
-            android:value=".Search" />
+            android:value=".search.Search" />
+        
+        <receiver 
+            android:name=".receivers.NotficationReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" >
+                </action>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
