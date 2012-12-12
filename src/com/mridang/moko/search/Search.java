@@ -1,15 +1,14 @@
 package com.mridang.moko.search;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 
-import org.apache.http.cookie.Cookie;
-
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.DownloadManager;
-import android.app.DownloadManager.Request;
 import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,18 +24,23 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import com.bugsense.trace.BugSenseHandler;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.mridang.moko.R;
-import com.mridang.moko.Settings;
-import com.mridang.moko.asynctasks.Enqueuer;
+import com.mridang.moko.activities.SettingsActivity;
+import com.mridang.moko.asynctasks.Downloader;
 import com.mridang.moko.asynctasks.Viewer;
 import com.mridang.moko.enums.Category;
+import com.mridang.moko.fragments.SettingsFragment;
 import com.mridang.moko.search.adapters.SearchResultsAdapter;
 import com.mridang.moko.search.asynctasks.Finder;
 import com.mridang.moko.search.managers.ResultsManager;
@@ -178,33 +182,86 @@ public class Search extends SherlockActivity {
 	}
 
     /*
-     * This is the listener for the share button
+     * This is the listener for the website button
      */
-    public View.OnClickListener oclShare = new OnClickListener() {
+    public View.OnClickListener oclWebsite = new OnClickListener() {
 
-    	public void onClick(View vewView) {
+        public void onClick(View vewView) {
 
-    	    EasyTracker.getTracker().trackEvent("OnClicks", "Share", "Share Torrent", null);
-			Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-			sharingIntent.setType("text/plain");
-			sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, ((URI) vewView.getTag()).toString());
-			startActivity(Intent.createChooser(sharingIntent,"Share using"));
+            EasyTracker.getTracker().trackEvent("OnClicks", "Website", "View Webpage", null);
+            new Viewer(Search.this).execute((URI) vewView.getTag());
 
-    	}
+        }
 
     };
 
-	/*
-	 * This is the listener for the enqueue button
-	 */
-	public View.OnClickListener oclEnqueue = new OnClickListener() {
+    /*
+     * This is the listener for the enqueue button
+     */
+    public View.OnClickListener oclEnqueue = new OnClickListener() {
 
-		public void onClick(View vewView) {
+        public void onClick(final View vewView) {
 
-		    EasyTracker.getTracker().trackEvent("OnClicks", "Enqueue", "Enqueue Torrent", null);
-			new Enqueuer(Search.this).execute((URI) vewView.getTag());
+            EasyTracker.getTracker().trackEvent("OnClicks", "Enqueue", "Enqueue Torrent", null);
 
-		}
+            AsyncHttpClient ahcClient = new AsyncHttpClient();
+            PersistentCookieStore pscCookies = new PersistentCookieStore(Search.this);
+            ahcClient.setCookieStore(pscCookies);
+            String[] strTypes = new String[] { "application/octet-stream", "application/x-bittorrent" };
+            ahcClient.get(((URI) vewView.getTag()).toString(), new BinaryHttpResponseHandler(strTypes) {
+
+            	/*
+            	 * @see com.loopj.android.http.BinaryHttpResponseHandler#onSuccess(byte[])
+            	 */
+                @Override
+                public void onSuccess(byte[] bytBytes) {
+
+                	File filTorrent = null;
+                	FileOutputStream fosOutput = null;
+
+					try {
+
+						filTorrent = File.createTempFile("xxx", ".torrent", Search.this.getCacheDir());
+						fosOutput = new FileOutputStream(filTorrent);
+						fosOutput.write(bytBytes);
+						fosOutput.close();
+
+	            		Intent ittEnqueue = new Intent(android.content.Intent.ACTION_VIEW);
+	            		ittEnqueue.setDataAndType(Uri.fromFile(filTorrent), "application/x-bittorrent");
+	            		Search.this.startActivity(ittEnqueue);
+
+					} catch (IOException e) {
+						sendFailureMessage(e, bytBytes);
+					} catch (ActivityNotFoundException e) {
+						Toast.makeText(Search.this, getResources().getString(R.string.no_torrent_handlers), Toast.LENGTH_LONG).show();
+					} finally {
+
+						try {
+							if (fosOutput != null)
+								fosOutput.close();
+						} catch (IOException e) {
+							sendFailureMessage(e, bytBytes);
+						}
+
+					}
+
+                }
+
+                /*
+                 * @see com.loopj.android.http.BinaryHttpResponseHandler#onFailure(java.lang.Throwable, byte[])
+                 */
+                @Override
+                public void onFailure(Throwable e, byte[] bytBytes) {
+
+                	Toast.makeText(Search.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                	e.printStackTrace();
+            		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
+
+                }
+
+            });
+
+        }
 
     };
 
@@ -260,17 +317,6 @@ public class Search extends SherlockActivity {
         }
 
         return;
-
-    }
-
-    /*
-     * This method shows a notification for anything
-     *
-     * @param  strMessage  the message to show as a toast
-     */
-    public void showNotication(String strMessage) {
-
-    	Toast.makeText(this, strMessage, Toast.LENGTH_LONG).show();
 
     }
 
@@ -410,8 +456,12 @@ public class Search extends SherlockActivity {
 
         } else if (itmMenuitem.getItemId() == R.id.settings) {
 
-			startActivity(new Intent(getBaseContext(), Settings.class));
-			return true;
+			Intent ittIntent = new Intent(this, SettingsActivity.class );
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+				ittIntent.putExtra(SherlockPreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsFragment.class.getName());
+			}
+			ittIntent.putExtra(SherlockPreferenceActivity.EXTRA_NO_HEADERS, true );
+			startActivity(ittIntent);
 
         }
 
@@ -420,16 +470,72 @@ public class Search extends SherlockActivity {
     }
 
     /*
-     * This is the listener for the website button
+     * This is the listener for the share button
      */
-    public View.OnClickListener oclWebsite = new OnClickListener() {
+    public View.OnClickListener oclShare = new OnClickListener() {
 
-    	public void onClick(View vewView) {
+        public void onClick(final View vewView) {
 
-    	    EasyTracker.getTracker().trackEvent("OnClicks", "Website", "View Webpage", null);
-    		new Viewer(Search.this).execute((URI) vewView.getTag());
+        	EasyTracker.getTracker().trackEvent("OnClicks", "Share", "Share Torrent", null);
 
-    	}
+            AsyncHttpClient ahcClient = new AsyncHttpClient();
+            PersistentCookieStore pscCookies = new PersistentCookieStore(Search.this);
+            ahcClient.setCookieStore(pscCookies);
+            ahcClient.get(((URI) vewView.getTag()).toString(), new AsyncHttpResponseHandler() {
+
+            	/*
+            	 * @see com.loopj.android.http.BinaryHttpResponseHandler#onSuccess(byte[])
+            	 */
+                @Override
+                public void onSuccess(String strResponse) {
+
+                	File filTorrent = null;
+                	FileOutputStream fosOutput = null;
+
+					try {
+
+						filTorrent = File.createTempFile("xxx", ".html", Search.this.getCacheDir());
+						fosOutput = new FileOutputStream(filTorrent);
+						fosOutput.write(strResponse.getBytes());
+						fosOutput.close();
+
+			            Intent ittShare = new Intent("android.intent.action.SEND");
+			            ittShare.setType("text/plain");
+			            ittShare.putExtra("android.intent.extra.TEXT", ((URI) vewView.getTag()).toString());
+			            startActivity(Intent.createChooser(ittShare, "Share using"));
+
+					} catch (IOException e) {
+						sendFailureMessage(e, strResponse);
+					} catch (ActivityNotFoundException e) {
+						Toast.makeText(Search.this, getResources().getString(R.string.no_torrent_handlers), Toast.LENGTH_LONG).show();
+					} finally {
+
+						try {
+							if (fosOutput != null)
+								fosOutput.close();
+						} catch (IOException e) {
+							sendFailureMessage(e, strResponse);
+						}
+
+					}
+
+                }
+
+                /*
+                 * @see com.loopj.android.http.BinaryHttpResponseHandler#onFailure(java.lang.Throwable, byte[])
+                 */
+                @Override
+                public void onFailure(Throwable e, String strResponse) {
+
+                	Toast.makeText(Search.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                	e.printStackTrace();
+            		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
+
+                }
+
+            });
+
+        }
 
     };
 
@@ -438,21 +544,12 @@ public class Search extends SherlockActivity {
      */
     public View.OnClickListener oclDownload = new OnClickListener() {
 
-    	@TargetApi(11)
-		public void onClick(View vewView) {
+        public void onClick(View vewView) {
 
-    	    EasyTracker.getTracker().trackEvent("OnClicks", "Download", "Download Torrent", null);
-            Request rqtRequest = new Request(Uri.parse(((URI) vewView.getTag()).toString()));
-            for (Cookie cooCookie : (new PersistentCookieStore(Search.this)).getCookies())
-            	rqtRequest.addRequestHeader(cooCookie.getName(), cooCookie.getValue());
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                rqtRequest.setShowRunningNotification(true);  
-            } else {
-                rqtRequest.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            }
-            ((DownloadManager) getSystemService(DOWNLOAD_SERVICE)).enqueue(rqtRequest);
+            EasyTracker.getTracker().trackEvent("OnClicks", "Download", "Download Torrent", null);
+            new Downloader(Search.this).execute(Uri.parse(((URI) vewView.getTag()).toString()));
 
-    	}
+        }
 
     };
 
