@@ -69,39 +69,39 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
      */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-    	if (key.equals("torrentleech_username")) {
+        if (key.equals("torrentleech_username")) {
             Preference pref = findPreference(key);
             EditTextPreference etpUsername = (EditTextPreference) pref;
             if (etpUsername.getText().isEmpty()) {
-            	etpUsername.setSummary(getResources().getString(R.string.enter_your_username));
+                etpUsername.setSummary(getResources().getString(R.string.enter_your_username));
             } else {
-	            pref.setSummary(etpUsername.getText());
+                pref.setSummary(etpUsername.getText());
             }
-    	}
+        }
 
         try {
 
             this.getActivity().sendBroadcast(new Intent(this.getActivity(), NotficationReceiver.class));
-        	DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
-        	String strFilename = dftFormat.format(new Date());
+            DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
+            String strFilename = dftFormat.format(new Date());
 
             if(this.getActivity().getApplicationContext().getFileStreamPath(strFilename).exists()) {
-            	this.getActivity().getApplicationContext().getFileStreamPath(strFilename).delete();
+                this.getActivity().getApplicationContext().getFileStreamPath(strFilename).delete();
             }
 
         } catch (Exception e) {
            Log.e("fragments.SettingsFragment", "An error occurred when flusing the day's cache after a preference changed.", e);
         }
 
-    	if (key.equals("torrentleech_password")) {
+        if (key.equals("torrentleech_password")) {
             Preference pref = findPreference(key);
             EditTextPreference etpPassword = (EditTextPreference) pref;
             if (etpPassword.getText().isEmpty()) {
-            	etpPassword.setSummary(getResources().getString(R.string.enter_your_password));
+                etpPassword.setSummary(getResources().getString(R.string.enter_your_password));
             } else {
-	            pref.setSummary(etpPassword.getText().replaceAll("(?s).", "*"));
+                pref.setSummary(etpPassword.getText().replaceAll("(?s).", "*"));
             }
-    	}
+        }
 
     }
 

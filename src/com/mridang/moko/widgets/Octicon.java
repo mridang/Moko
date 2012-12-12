@@ -14,44 +14,44 @@ public class Octicon extends TextView {
     /*
      * @see android.widget.TextView#TextView(android.content.Context, android.util.AttributeSet, int)
      */
-	public Octicon(Context context, AttributeSet attrs, int defStyle) {
+    public Octicon(Context context, AttributeSet attrs, int defStyle) {
 
-		super(context, attrs, defStyle);
-		init();
+        super(context, attrs, defStyle);
+        init();
 
-	}
+    }
 
     /*
      * @see android.widget.TextView#TextView(android.content.Context, android.util.AttributeSet)
      */
-	public Octicon(Context context, AttributeSet attrs) {
+    public Octicon(Context context, AttributeSet attrs) {
 
-		super(context, attrs);
-		init();
+        super(context, attrs);
+        init();
 
-	}
+    }
 
     /*
      * @see android.widget.TextView#TextView(android.content.Context)
      */
-	public Octicon(Context context) {
+    public Octicon(Context context) {
 
-		super(context);
-		init();
+        super(context);
+        init();
 
-	}
+    }
 
     /*
      * @see android.widget.TextView
      */
-	private void init() {
+    private void init() {
 
-		if (!isInEditMode()) {
-			Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
-					"fonts/octicons.ttf");
-			setTypeface(tf);
-		}
+        if (!isInEditMode()) {
+            Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
+                    "fonts/octicons.ttf");
+            setTypeface(tf);
+        }
 
-	}
+    }
 
 }

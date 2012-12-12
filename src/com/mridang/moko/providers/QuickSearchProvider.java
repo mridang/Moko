@@ -15,32 +15,32 @@ import com.mridang.moko.search.Search;
  */
 public class QuickSearchProvider extends SearchRecentSuggestionsProvider {
 
-	/*
-	 * The unique name of the search provider
-	 */
-	public final static String AUTHORITY = "com.mridang.moko.providers.QuickSearchProvider";
-	/*
-	 * The type of search suggestions to return
-	 */
-	public final static int MODE = DATABASE_MODE_QUERIES | DATABASE_MODE_2LINES;
+    /*
+     * The unique name of the search provider
+     */
+    public final static String AUTHORITY = "com.mridang.moko.providers.QuickSearchProvider";
+    /*
+     * The type of search suggestions to return
+     */
+    public final static int MODE = DATABASE_MODE_QUERIES | DATABASE_MODE_2LINES;
 
-	/*
-	 * @see android.content.SearchRecentSuggestionsProvider#
-	 * SearchRecentSuggestionsProvider()
-	 */
-	public QuickSearchProvider() {
+    /*
+     * @see android.content.SearchRecentSuggestionsProvider#
+     * SearchRecentSuggestionsProvider()
+     */
+    public QuickSearchProvider() {
 
-		setupSuggestions(AUTHORITY, MODE);
+        setupSuggestions(AUTHORITY, MODE);
 
-	}
+    }
 
-	/*
-	 * @see
-	 * android.content.SearchRecentSuggestionsProvider#query(android.net.Uri,
-	 * java.lang.String[], java.lang.String, java.lang.String[],
-	 * java.lang.String)
-	 */
-	@Override
+    /*
+     * @see
+     * android.content.SearchRecentSuggestionsProvider#query(android.net.Uri,
+     * java.lang.String[], java.lang.String, java.lang.String[],
+     * java.lang.String)
+     */
+    @Override
     public Cursor query(Uri uriProvider, String[] strProjection,
             String strSelection, String[] lstArguments, String strSort) {
 

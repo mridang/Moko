@@ -54,10 +54,10 @@ import com.mridang.moko.search.managers.ResultsManager.Sort;
  */
 public class Search extends SherlockActivity {
 
-	/*
-	 * The search results adapter that will power the ListView
-	 */
-	public SearchResultsAdapter objAdapter;
+    /*
+     * The search results adapter that will power the ListView
+     */
+    public SearchResultsAdapter objAdapter;
     /*
      * The sorting option that should be used when showing results
      */
@@ -102,14 +102,14 @@ public class Search extends SherlockActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-    	super.onCreate(savedInstanceState);
-    	BugSenseHandler.initAndStartSession(this, "da66b24c");
-    	setContentView(R.layout.search);
+        super.onCreate(savedInstanceState);
+        BugSenseHandler.initAndStartSession(this, "da66b24c");
+        setContentView(R.layout.search);
 
         ActionBar abrAction = getSupportActionBar();
         abrAction.setDisplayHomeAsUpEnabled(false);
 
-    	handleIntent(getIntent());
+        handleIntent(getIntent());
 
     }
 
@@ -130,7 +130,7 @@ public class Search extends SherlockActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-    	MenuInflater inflater = getSupportMenuInflater();
+        MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.search, menu);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -154,32 +154,32 @@ public class Search extends SherlockActivity {
     @Override
     public boolean onPrepareOptionsMenu (Menu menu) {
 
-    	if (this.objAdapter == null) {
-        	menu.findItem(R.id.sort).setEnabled(false);
-        	menu.findItem(R.id.filter).setEnabled(false);
-        	menu.findItem(R.id.group).setEnabled(false);
+        if (this.objAdapter == null) {
+            menu.findItem(R.id.sort).setEnabled(false);
+            menu.findItem(R.id.filter).setEnabled(false);
+            menu.findItem(R.id.group).setEnabled(false);
         } else {
-        	menu.findItem(R.id.sort).setEnabled(true);
-        	menu.findItem(R.id.filter).setEnabled(true);
-        	menu.findItem(R.id.group).setEnabled(true);
+            menu.findItem(R.id.sort).setEnabled(true);
+            menu.findItem(R.id.filter).setEnabled(true);
+            menu.findItem(R.id.group).setEnabled(true);
 
         }
 
         return true;
     }
 
-	/*
-	 * This shows a full screen loading animation
-	 */
-	public void showProgress() {
+    /*
+     * This shows a full screen loading animation
+     */
+    public void showProgress() {
 
-		LinearLayout lltLinear = (LinearLayout) findViewById(R.id.scroll);
-		lltLinear.setVisibility(View.GONE);
+        LinearLayout lltLinear = (LinearLayout) findViewById(R.id.scroll);
+        lltLinear.setVisibility(View.GONE);
 
-		ProgressBar pbrProgress = (ProgressBar) findViewById(R.id.progress);
-		pbrProgress.setVisibility(View.VISIBLE);
+        ProgressBar pbrProgress = (ProgressBar) findViewById(R.id.progress);
+        pbrProgress.setVisibility(View.VISIBLE);
 
-	}
+    }
 
     /*
      * This is the listener for the website button
@@ -210,40 +210,40 @@ public class Search extends SherlockActivity {
             String[] strTypes = new String[] { "application/octet-stream", "application/x-bittorrent" };
             ahcClient.get(((URI) vewView.getTag()).toString(), new BinaryHttpResponseHandler(strTypes) {
 
-            	/*
-            	 * @see com.loopj.android.http.BinaryHttpResponseHandler#onSuccess(byte[])
-            	 */
+                /*
+                 * @see com.loopj.android.http.BinaryHttpResponseHandler#onSuccess(byte[])
+                 */
                 @Override
                 public void onSuccess(byte[] bytBytes) {
 
-                	File filTorrent = null;
-                	FileOutputStream fosOutput = null;
+                    File filTorrent = null;
+                    FileOutputStream fosOutput = null;
 
-					try {
+                    try {
 
-						filTorrent = File.createTempFile("xxx", ".torrent", Search.this.getCacheDir());
-						fosOutput = new FileOutputStream(filTorrent);
-						fosOutput.write(bytBytes);
-						fosOutput.close();
+                        filTorrent = File.createTempFile("xxx", ".torrent", Search.this.getCacheDir());
+                        fosOutput = new FileOutputStream(filTorrent);
+                        fosOutput.write(bytBytes);
+                        fosOutput.close();
 
-	            		Intent ittEnqueue = new Intent(android.content.Intent.ACTION_VIEW);
-	            		ittEnqueue.setDataAndType(Uri.fromFile(filTorrent), "application/x-bittorrent");
-	            		Search.this.startActivity(ittEnqueue);
+                        Intent ittEnqueue = new Intent(android.content.Intent.ACTION_VIEW);
+                        ittEnqueue.setDataAndType(Uri.fromFile(filTorrent), "application/x-bittorrent");
+                        Search.this.startActivity(ittEnqueue);
 
-					} catch (IOException e) {
-						sendFailureMessage(e, bytBytes);
-					} catch (ActivityNotFoundException e) {
-						Toast.makeText(Search.this, getResources().getString(R.string.no_torrent_handlers), Toast.LENGTH_LONG).show();
-					} finally {
+                    } catch (IOException e) {
+                        sendFailureMessage(e, bytBytes);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(Search.this, getResources().getString(R.string.no_torrent_handlers), Toast.LENGTH_LONG).show();
+                    } finally {
 
-						try {
-							if (fosOutput != null)
-								fosOutput.close();
-						} catch (IOException e) {
-							sendFailureMessage(e, bytBytes);
-						}
+                        try {
+                            if (fosOutput != null)
+                                fosOutput.close();
+                        } catch (IOException e) {
+                            sendFailureMessage(e, bytBytes);
+                        }
 
-					}
+                    }
 
                 }
 
@@ -253,9 +253,9 @@ public class Search extends SherlockActivity {
                 @Override
                 public void onFailure(Throwable e, byte[] bytBytes) {
 
-                	Toast.makeText(Search.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
-                	e.printStackTrace();
-            		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
+                    Toast.makeText(Search.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 
                 }
 
@@ -265,47 +265,47 @@ public class Search extends SherlockActivity {
 
     };
 
-	/*
-	 * Handles the intent passed to the activity i.e. search or view
-	 *
-	 * @param  ittIntent  the intent passed to the activity
-	 */
+    /*
+     * Handles the intent passed to the activity i.e. search or view
+     *
+     * @param  ittIntent  the intent passed to the activity
+     */
     public void handleIntent(Intent intent) {
 
         if  (Search.SEARCH_MOVIES.equals(intent.getAction())) {
 
-        	this.objFinder = new Finder(this, Category.MOVIE);
-        	EasyTracker.getTracker().trackEvent("OnClicks", "Search", "Find Movies", null);
-        	this.objFinder.execute(intent.getStringExtra(SearchManager.QUERY));
-        	return;
+            this.objFinder = new Finder(this, Category.MOVIE);
+            EasyTracker.getTracker().trackEvent("OnClicks", "Search", "Find Movies", null);
+            this.objFinder.execute(intent.getStringExtra(SearchManager.QUERY));
+            return;
 
         } else if (Search.SEARCH_MUSIC.equals(intent.getAction())) {
 
             this.objFinder = new Finder(this, Category.ALBUM);
             EasyTracker.getTracker().trackEvent("OnClicks", "Search", "Find Albums", null);
             this.objFinder.execute(intent.getStringExtra(SearchManager.QUERY));
-        	return;
+            return;
 
         } else if (Search.SEARCH_GAMES.equals(intent.getAction())) {
 
             this.objFinder = new Finder(this, Category.GAME);
             EasyTracker.getTracker().trackEvent("OnClicks", "Search", "Find Games", null);
             this.objFinder.execute(intent.getStringExtra(SearchManager.QUERY));
-        	return;
+            return;
 
         } else if (Search.SEARCH_SHOWS.equals(intent.getAction())) {
 
             this.objFinder = new Finder(this, Category.SHOW);
             EasyTracker.getTracker().trackEvent("OnClicks", "Search", "Find Shows", null);
             this.objFinder.execute(intent.getStringExtra(SearchManager.QUERY));
-        	return;
+            return;
 
         } else if (Search.SEARCH_APPS.equals(intent.getAction())) {
 
             this.objFinder = new Finder(this, Category.APP);
             EasyTracker.getTracker().trackEvent("OnClicks", "Search", "Find Applications", null);
             this.objFinder.execute(intent.getStringExtra(SearchManager.QUERY));
-        	return;
+            return;
 
         } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 
@@ -328,140 +328,140 @@ public class Search extends SherlockActivity {
 
         if (itmMenuitem.getItemId() == R.id.search) {
 
-        	onSearchRequested();
-			return true;
+            onSearchRequested();
+            return true;
 
         } else if (itmMenuitem.getItemId() == R.id.group) {
 
-			final ArrayList<CharSequence> lstChoices = new ArrayList<CharSequence>();
+            final ArrayList<CharSequence> lstChoices = new ArrayList<CharSequence>();
 
-			for (ResultsManager.Group grpGroup : ResultsManager.Group.values()) {
+            for (ResultsManager.Group grpGroup : ResultsManager.Group.values()) {
 
-				lstChoices
-						.add(getResources()
-								.getString(
-										getApplicationContext()
-												.getResources()
-												.getIdentifier(
-														grpGroup.name().toLowerCase(),
-														"string",
-														getApplicationContext()
-																.getApplicationInfo().packageName)));
+                lstChoices
+                        .add(getResources()
+                                .getString(
+                                        getApplicationContext()
+                                                .getResources()
+                                                .getIdentifier(
+                                                        grpGroup.name().toLowerCase(),
+                                                        "string",
+                                                        getApplicationContext()
+                                                                .getApplicationInfo().packageName)));
 
-			}
+            }
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(itmMenuitem.getTitle());
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(itmMenuitem.getTitle());
 
-			builder.setSingleChoiceItems(lstChoices.toArray(new CharSequence[lstChoices.size()]),
-					Search.this.grpGroup.ordinal(), new DialogInterface.OnClickListener() {
+            builder.setSingleChoiceItems(lstChoices.toArray(new CharSequence[lstChoices.size()]),
+                    Search.this.grpGroup.ordinal(), new DialogInterface.OnClickListener() {
 
-						public void onClick(DialogInterface dialog, int item) {
-							Search.this.grpGroup = Group.values()[item];
-							Search.this.objAdapter.notifyDataSetChanged();
-							dialog.dismiss();
-							Toast.makeText(getApplicationContext(),
-									lstChoices.get(item), Toast.LENGTH_SHORT)
-									.show();
-						}
+                        public void onClick(DialogInterface dialog, int item) {
+                            Search.this.grpGroup = Group.values()[item];
+                            Search.this.objAdapter.notifyDataSetChanged();
+                            dialog.dismiss();
+                            Toast.makeText(getApplicationContext(),
+                                    lstChoices.get(item), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
 
-					});
+                    });
 
-			AlertDialog alert = builder.create();
-			alert.show();
+            AlertDialog alert = builder.create();
+            alert.show();
 
-			return true;
+            return true;
 
         } else if (itmMenuitem.getItemId() == R.id.sort) {
 
-			final ArrayList<CharSequence> lstChoices = new ArrayList<CharSequence>();
+            final ArrayList<CharSequence> lstChoices = new ArrayList<CharSequence>();
 
-			for (ResultsManager.Sort srtSort : ResultsManager.Sort.values()) {
+            for (ResultsManager.Sort srtSort : ResultsManager.Sort.values()) {
 
-				lstChoices
-				.add(getResources()
-						.getString(
-								getApplicationContext()
-										.getResources()
-										.getIdentifier(
-												srtSort.name().toLowerCase(),
-												"string",
-												getApplicationContext()
-														.getApplicationInfo().packageName)));
+                lstChoices
+                .add(getResources()
+                        .getString(
+                                getApplicationContext()
+                                        .getResources()
+                                        .getIdentifier(
+                                                srtSort.name().toLowerCase(),
+                                                "string",
+                                                getApplicationContext()
+                                                        .getApplicationInfo().packageName)));
 
-			}
+            }
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(itmMenuitem.getTitle());
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(itmMenuitem.getTitle());
 
-			builder.setSingleChoiceItems(lstChoices.toArray(new CharSequence[lstChoices.size()]),
-					Search.this.srtSort.ordinal(), new DialogInterface.OnClickListener() {
+            builder.setSingleChoiceItems(lstChoices.toArray(new CharSequence[lstChoices.size()]),
+                    Search.this.srtSort.ordinal(), new DialogInterface.OnClickListener() {
 
-						public void onClick(DialogInterface dialog, int item) {
-							Search.this.srtSort = Sort.values()[item];
-							Search.this.objAdapter.notifyDataSetChanged();
-							dialog.dismiss();
-							Toast.makeText(getApplicationContext(),
-									lstChoices.get(item), Toast.LENGTH_SHORT)
-									.show();
-						}
+                        public void onClick(DialogInterface dialog, int item) {
+                            Search.this.srtSort = Sort.values()[item];
+                            Search.this.objAdapter.notifyDataSetChanged();
+                            dialog.dismiss();
+                            Toast.makeText(getApplicationContext(),
+                                    lstChoices.get(item), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
 
-					});
+                    });
 
-			AlertDialog alert = builder.create();
-			alert.show();
+            AlertDialog alert = builder.create();
+            alert.show();
 
-			return true;
+            return true;
 
         } else if (itmMenuitem.getItemId() == R.id.filter) {
 
-			final ArrayList<CharSequence> lstChoices = new ArrayList<CharSequence>();
+            final ArrayList<CharSequence> lstChoices = new ArrayList<CharSequence>();
 
-			for (ResultsManager.Filter fltFilter : ResultsManager.Filter.values()) {
+            for (ResultsManager.Filter fltFilter : ResultsManager.Filter.values()) {
 
-				lstChoices
-				.add(getResources()
-						.getString(
-								getApplicationContext()
-										.getResources()
-										.getIdentifier(
-												fltFilter.name().toLowerCase(),
-												"string",
-												getApplicationContext()
-														.getApplicationInfo().packageName)));
+                lstChoices
+                .add(getResources()
+                        .getString(
+                                getApplicationContext()
+                                        .getResources()
+                                        .getIdentifier(
+                                                fltFilter.name().toLowerCase(),
+                                                "string",
+                                                getApplicationContext()
+                                                        .getApplicationInfo().packageName)));
 
-			}
+            }
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(itmMenuitem.getTitle());
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(itmMenuitem.getTitle());
 
-			builder.setSingleChoiceItems(lstChoices.toArray(new CharSequence[lstChoices.size()]),
-					Search.this.fltFilter.ordinal(), new DialogInterface.OnClickListener() {
+            builder.setSingleChoiceItems(lstChoices.toArray(new CharSequence[lstChoices.size()]),
+                    Search.this.fltFilter.ordinal(), new DialogInterface.OnClickListener() {
 
-						public void onClick(DialogInterface dialog, int item) {
-							Search.this.fltFilter = Filter.values()[item];
-							Search.this.objAdapter.notifyDataSetChanged();
-							dialog.dismiss();
-							Toast.makeText(getApplicationContext(),
-									lstChoices.get(item), Toast.LENGTH_SHORT)
-									.show();
-						}
+                        public void onClick(DialogInterface dialog, int item) {
+                            Search.this.fltFilter = Filter.values()[item];
+                            Search.this.objAdapter.notifyDataSetChanged();
+                            dialog.dismiss();
+                            Toast.makeText(getApplicationContext(),
+                                    lstChoices.get(item), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
 
-					});
+                    });
 
-			AlertDialog alert = builder.create();
-			alert.show();
+            AlertDialog alert = builder.create();
+            alert.show();
 
-			return true;
+            return true;
 
         } else if (itmMenuitem.getItemId() == R.id.settings) {
 
-			Intent ittIntent = new Intent(this, SettingsActivity.class );
-			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-				ittIntent.putExtra(SherlockPreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsFragment.class.getName());
-			}
-			ittIntent.putExtra(SherlockPreferenceActivity.EXTRA_NO_HEADERS, true );
-			startActivity(ittIntent);
+            Intent ittIntent = new Intent(this, SettingsActivity.class );
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+                ittIntent.putExtra(SherlockPreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsFragment.class.getName());
+            }
+            ittIntent.putExtra(SherlockPreferenceActivity.EXTRA_NO_HEADERS, true );
+            startActivity(ittIntent);
 
         }
 
@@ -476,48 +476,48 @@ public class Search extends SherlockActivity {
 
         public void onClick(final View vewView) {
 
-        	EasyTracker.getTracker().trackEvent("OnClicks", "Share", "Share Torrent", null);
+            EasyTracker.getTracker().trackEvent("OnClicks", "Share", "Share Torrent", null);
 
             AsyncHttpClient ahcClient = new AsyncHttpClient();
             PersistentCookieStore pscCookies = new PersistentCookieStore(Search.this);
             ahcClient.setCookieStore(pscCookies);
             ahcClient.get(((URI) vewView.getTag()).toString(), new AsyncHttpResponseHandler() {
 
-            	/*
-            	 * @see com.loopj.android.http.BinaryHttpResponseHandler#onSuccess(byte[])
-            	 */
+                /*
+                 * @see com.loopj.android.http.BinaryHttpResponseHandler#onSuccess(byte[])
+                 */
                 @Override
                 public void onSuccess(String strResponse) {
 
-                	File filTorrent = null;
-                	FileOutputStream fosOutput = null;
+                    File filTorrent = null;
+                    FileOutputStream fosOutput = null;
 
-					try {
+                    try {
 
-						filTorrent = File.createTempFile("xxx", ".html", Search.this.getCacheDir());
-						fosOutput = new FileOutputStream(filTorrent);
-						fosOutput.write(strResponse.getBytes());
-						fosOutput.close();
+                        filTorrent = File.createTempFile("xxx", ".html", Search.this.getCacheDir());
+                        fosOutput = new FileOutputStream(filTorrent);
+                        fosOutput.write(strResponse.getBytes());
+                        fosOutput.close();
 
-			            Intent ittShare = new Intent("android.intent.action.SEND");
-			            ittShare.setType("text/plain");
-			            ittShare.putExtra("android.intent.extra.TEXT", ((URI) vewView.getTag()).toString());
-			            startActivity(Intent.createChooser(ittShare, "Share using"));
+                        Intent ittShare = new Intent("android.intent.action.SEND");
+                        ittShare.setType("text/plain");
+                        ittShare.putExtra("android.intent.extra.TEXT", ((URI) vewView.getTag()).toString());
+                        startActivity(Intent.createChooser(ittShare, "Share using"));
 
-					} catch (IOException e) {
-						sendFailureMessage(e, strResponse);
-					} catch (ActivityNotFoundException e) {
-						Toast.makeText(Search.this, getResources().getString(R.string.no_torrent_handlers), Toast.LENGTH_LONG).show();
-					} finally {
+                    } catch (IOException e) {
+                        sendFailureMessage(e, strResponse);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(Search.this, getResources().getString(R.string.no_torrent_handlers), Toast.LENGTH_LONG).show();
+                    } finally {
 
-						try {
-							if (fosOutput != null)
-								fosOutput.close();
-						} catch (IOException e) {
-							sendFailureMessage(e, strResponse);
-						}
+                        try {
+                            if (fosOutput != null)
+                                fosOutput.close();
+                        } catch (IOException e) {
+                            sendFailureMessage(e, strResponse);
+                        }
 
-					}
+                    }
 
                 }
 
@@ -527,9 +527,9 @@ public class Search extends SherlockActivity {
                 @Override
                 public void onFailure(Throwable e, String strResponse) {
 
-                	Toast.makeText(Search.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
-                	e.printStackTrace();
-            		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
+                    Toast.makeText(Search.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 
                 }
 
@@ -559,7 +559,7 @@ public class Search extends SherlockActivity {
     @Override
     protected void onNewIntent(Intent intent) {
 
-    	handleIntent(intent);
+        handleIntent(intent);
 
     }
 
@@ -590,23 +590,23 @@ public class Search extends SherlockActivity {
 
     }
 
-	/*
-	 * This hides the full screen loading animation
-	 */
-	public void hideProgress() {
+    /*
+     * This hides the full screen loading animation
+     */
+    public void hideProgress() {
 
-		ProgressBar pbrProgress = (ProgressBar) findViewById(R.id.progress);
-		pbrProgress.setVisibility(View.GONE);
+        ProgressBar pbrProgress = (ProgressBar) findViewById(R.id.progress);
+        pbrProgress.setVisibility(View.GONE);
 
-		LinearLayout lltLinear = (LinearLayout) findViewById(R.id.scroll);
-		lltLinear.setVisibility(View.VISIBLE);
+        LinearLayout lltLinear = (LinearLayout) findViewById(R.id.scroll);
+        lltLinear.setVisibility(View.VISIBLE);
 
-	}
+    }
 
-	/*
-	 * This will show a dialog with the filtering options
-	 */
-	public void showFilters() {
+    /*
+     * This will show a dialog with the filtering options
+     */
+    public void showFilters() {
 
         final ArrayList<CharSequence> lstChoices = new ArrayList<CharSequence>();
 
@@ -645,6 +645,6 @@ public class Search extends SherlockActivity {
         AlertDialog alert = builder.create();
         alert.show();
 
-	}
+    }
 
 }

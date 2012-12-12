@@ -27,20 +27,20 @@ import com.mridang.moko.structures.Torrent;
 public class TrendingTorrentsAdapter extends BaseAdapter  {
 
     /*
-	 * The layout inflater for inflating the listview rows
-	 */
-	private final LayoutInflater linInflater;
-	/*
-	 * The array containing the rows
-	 */
-	public ArrayList<Torrent> objTorrents;
-	/*
-	 * The array containing the rows
-	 */
-	public ArrayList<Row> objRows;
-	/*
-	 * The instance of the calling class
-	 */
+     * The layout inflater for inflating the listview rows
+     */
+    private final LayoutInflater linInflater;
+    /*
+     * The array containing the rows
+     */
+    public ArrayList<Torrent> objTorrents;
+    /*
+     * The array containing the rows
+     */
+    public ArrayList<Row> objRows;
+    /*
+     * The instance of the calling class
+     */
     private Trend ctxContext = null;
     /*
      * The holder to hold intance of a row layout
@@ -67,9 +67,9 @@ public class TrendingTorrentsAdapter extends BaseAdapter  {
      */
     Boolean booHasEnqueuer = true;
 
-	/*
-	 * Constructor
-	 */
+    /*
+     * Constructor
+     */
     public TrendingTorrentsAdapter(Trend ctxContext, ArrayList<Torrent> objTorrents) {
 
         linInflater = LayoutInflater.from(ctxContext);
@@ -95,74 +95,74 @@ public class TrendingTorrentsAdapter extends BaseAdapter  {
 
     }
 
-	/*
-	 * @see android.widget.Adapter#getCount()
-	 */
-	public int getCount() {
+    /*
+     * @see android.widget.Adapter#getCount()
+     */
+    public int getCount() {
 
-		return objRows.size();
+        return objRows.size();
 
-	}
+    }
 
-	/*
-	 * @see android.widget.Adapter#getItem(int)
-	 */
-	public Torrent getItem(int intPosition) {
+    /*
+     * @see android.widget.Adapter#getItem(int)
+     */
+    public Torrent getItem(int intPosition) {
 
-		return (Torrent) objRows.get(intPosition);
+        return (Torrent) objRows.get(intPosition);
 
-	}
+    }
 
-	/*
-	 * @see android.widget.Adapter#getItemId(int)
-	 */
-	public long getItemId(int intPosition) {
+    /*
+     * @see android.widget.Adapter#getItemId(int)
+     */
+    public long getItemId(int intPosition) {
 
-		return intPosition;
+        return intPosition;
 
-	}
+    }
 
-	/*
-	 * @see android.widget.BaseAdapter#getViewTypeCount()
-	 */
-	@Override
-	public int getViewTypeCount() {
+    /*
+     * @see android.widget.BaseAdapter#getViewTypeCount()
+     */
+    @Override
+    public int getViewTypeCount() {
 
-	    return 2;
+        return 2;
 
-	}
+    }
 
-	/*
-	 * @see android.widget.BaseAdapter#getItemViewType(int)
-	 */
-	@Override
-	public int getItemViewType(int intPosition) {
+    /*
+     * @see android.widget.BaseAdapter#getItemViewType(int)
+     */
+    @Override
+    public int getItemViewType(int intPosition) {
 
-	    return (this.objRows.get(intPosition) instanceof Section) ? 0 : 1;
+        return (this.objRows.get(intPosition) instanceof Section) ? 0 : 1;
 
-	}
+    }
 
-	/*
-	 * @see android.widget.Adapter#notifyDataSetChanged()
-	 */
-	@Override
+    /*
+     * @see android.widget.Adapter#notifyDataSetChanged()
+     */
+    @Override
     public void notifyDataSetChanged() {
 
-		this.objRows = TrendingManager.process(new ArrayList<Torrent>(this.objTorrents),
-				this.ctxContext.srtSort, this.ctxContext.fltFilter,
-				this.ctxContext.grpGroup);
+        this.objRows = TrendingManager.process(new ArrayList<Torrent>(this.objTorrents),
+                this.ctxContext.srtSort, this.ctxContext.fltFilter,
+                this.ctxContext.grpGroup);
 
-		super.notifyDataSetChanged();
+        super.notifyDataSetChanged();
 
         if (this.objRows.size() == 0)
             this.ctxContext.showFilters();
 
-	}
+    }
 
-	/*
-	 * @see android.widget.Adapter#getView(int, android.view.View,
-	 * android.view.ViewGroup)
-	 */
+    /*
+     * @see android.widget.Adapter#getView(int, android.view.View,
+     * android.view.ViewGroup)
+     */
     public View getView(int intPosition, View vewView, ViewGroup vgrParent) {
 
         if (this.objRows.get(intPosition) instanceof Section) {

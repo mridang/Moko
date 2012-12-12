@@ -43,9 +43,9 @@ import com.mridang.moko.structures.Torrent;
  */
 public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 
-	/*
-	 * The instance of the calling class
-	 */
+    /*
+     * The instance of the calling class
+     */
     private Trend objTrend = null;
     /*
      * The instance of the preferences class to fetch preferences
@@ -64,18 +64,18 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
      */
     private Long lngTiming;
 
-	/*
-	 * @see android.os.AsyncTask#doInBackground(Params[])
-	 */
+    /*
+     * @see android.os.AsyncTask#doInBackground(Params[])
+     */
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     protected ArrayList<Torrent> doInBackground(String... strQuery) {
 
         // Let's load the data from a serialized format if it already exists
         try {
 
-        	DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
-        	String strFilename = dftFormat.format(new Date());
+            DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
+            String strFilename = dftFormat.format(new Date());
 
             if(this.objTrend.getApplicationContext().getFileStreamPath(strFilename).exists()) {
 
@@ -93,96 +93,96 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
             //Do nothing
         }
 
-    	ArrayList<Torrent> objTorrents = new ArrayList<Torrent>();
-    	ExecutorService esrExecutor = Executors.newFixedThreadPool(2);
-    	Set<Callable<ArrayList<Torrent>>> setCallables = new HashSet<Callable<ArrayList<Torrent>>>();
+        ArrayList<Torrent> objTorrents = new ArrayList<Torrent>();
+        ExecutorService esrExecutor = Executors.newFixedThreadPool(2);
+        Set<Callable<ArrayList<Torrent>>> setCallables = new HashSet<Callable<ArrayList<Torrent>>>();
 
-		if (this.shpSettings.getBoolean("use_kickasstorrents", true)) {
+        if (this.shpSettings.getBoolean("use_kickasstorrents", true)) {
 
-	    	setCallables.add(new Callable<ArrayList<Torrent>>() {
+            setCallables.add(new Callable<ArrayList<Torrent>>() {
 
-	    	    public ArrayList<Torrent> call() throws Exception {
+                public ArrayList<Torrent> call() throws Exception {
 
-	    	    	try {
+                    try {
 
-	    				Log.d("asynctasks.Scraper", "Scraping Kickass");
-	    				Kickass objKickass = new Kickass(Scraper.this.objTrend);
-	    				ArrayList<Torrent> objKickassTorrents = new ArrayList<Torrent>();
-	    				objKickassTorrents = objKickass.doScrape();
-	    				return objKickassTorrents;
+                        Log.d("asynctasks.Scraper", "Scraping Kickass");
+                        Kickass objKickass = new Kickass(Scraper.this.objTrend);
+                        ArrayList<Torrent> objKickassTorrents = new ArrayList<Torrent>();
+                        objKickassTorrents = objKickass.doScrape();
+                        return objKickassTorrents;
 
-			    	} catch (Exception e) {
-			    		Log.w("asynctask.Scraper", "Error scraping from Kickass Torrents");
-			    		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
+                    } catch (Exception e) {
+                        Log.w("asynctask.Scraper", "Error scraping from Kickass Torrents");
+                        EasyTracker.getTracker().trackException(e.getMessage(), e, false);
                         //TODO: Show message to the user that we were unable to query this site.
-			    	}
+                    }
 
-			    	return new ArrayList<Torrent>();
+                    return new ArrayList<Torrent>();
 
-	    	    }
+                }
 
-	    	});
+            });
 
-		}
-		
-		if (this.shpSettings.getBoolean("use_fenopytorrents", true)) {
+        }
 
-	    	setCallables.add(new Callable<ArrayList<Torrent>>() {
+        if (this.shpSettings.getBoolean("use_fenopytorrents", true)) {
 
-	    	    public ArrayList<Torrent> call() throws Exception {
+            setCallables.add(new Callable<ArrayList<Torrent>>() {
 
-	    	    	try {
+                public ArrayList<Torrent> call() throws Exception {
 
-	    				Log.d("asynctasks.Fenopy", "Scraping Fenopy");
-	    				Fenopy objFenopy = new Fenopy(Scraper.this.objTrend);
-	    				ArrayList<Torrent> objFenopyTorrents = new ArrayList<Torrent>();
-	    				objFenopyTorrents = objFenopy.doScrape();
-	    				return objFenopyTorrents;
+                    try {
 
-			    	} catch (Exception e) {
-			    		Log.w("asynctask.Scraper", "Error scraping from Fenopy Europe");
-			    		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
-			    		//TODO: Show message to the user that we were unable to query this site.
-			    	}
+                        Log.d("asynctasks.Fenopy", "Scraping Fenopy");
+                        Fenopy objFenopy = new Fenopy(Scraper.this.objTrend);
+                        ArrayList<Torrent> objFenopyTorrents = new ArrayList<Torrent>();
+                        objFenopyTorrents = objFenopy.doScrape();
+                        return objFenopyTorrents;
 
-			    	return new ArrayList<Torrent>();
+                    } catch (Exception e) {
+                        Log.w("asynctask.Scraper", "Error scraping from Fenopy Europe");
+                        EasyTracker.getTracker().trackException(e.getMessage(), e, false);
+                        //TODO: Show message to the user that we were unable to query this site.
+                    }
 
-	    	    }
+                    return new ArrayList<Torrent>();
 
-	    	});
+                }
 
-		}
+            });
 
-		List<Future<ArrayList<Torrent>>> lstFutures;
+        }
 
-		try {
+        List<Future<ArrayList<Torrent>>> lstFutures;
 
-			lstFutures = esrExecutor.invokeAll(setCallables);
+        try {
 
-			for(Future<ArrayList<Torrent>> futFuture : lstFutures){
+            lstFutures = esrExecutor.invokeAll(setCallables);
 
-				if (futFuture.get().isEmpty() == false)
-				    objTorrents.addAll(futFuture.get());
+            for(Future<ArrayList<Torrent>> futFuture : lstFutures){
 
-			}
+                if (futFuture.get().isEmpty() == false)
+                    objTorrents.addAll(futFuture.get());
 
-		} catch (InterruptedException e) {
+            }
 
-			e.printStackTrace();
+        } catch (InterruptedException e) {
 
-		} catch (ExecutionException e) {
+            e.printStackTrace();
 
-			e.printStackTrace();
+        } catch (ExecutionException e) {
 
-		}
+            e.printStackTrace();
 
-		esrExecutor.shutdown();
+        }
+
+        esrExecutor.shutdown();
 
         // Let's save the data in a serialized format if it doesn't exist
         try {
 
-        	DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
-        	String strFilename = dftFormat.format(new Date());
+            DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
+            String strFilename = dftFormat.format(new Date());
 
             if(!this.objTrend.getApplicationContext().getFileStreamPath(strFilename).exists()) {
                 FileOutputStream fosSerialize = this.objTrend.getApplicationContext().openFileOutput(strFilename, Context.MODE_PRIVATE);
@@ -197,7 +197,7 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
             //Do nothing
         }
 
-		return objTorrents;
+        return objTorrents;
 
     }
 
@@ -207,8 +207,8 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
     @Override
     protected void onPreExecute() {
 
-    	this.objTrend.showProgress();
-    	this.lngTiming = System.nanoTime();
+        this.objTrend.showProgress();
+        this.lngTiming = System.nanoTime();
 
     }
 
@@ -231,51 +231,51 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
     @Override
     protected void onPostExecute(ArrayList<Torrent> objTorrents) {
 
-    	this.objTrend.hideProgress();
-    	this.lngTiming = System.nanoTime() - this.lngTiming;
+        this.objTrend.hideProgress();
+        this.lngTiming = System.nanoTime() - this.lngTiming;
 
-    	EasyTracker.getTracker().trackTiming("AsyncTasks", this.lngTiming, "Scraper", "Get Trending Torrents");
+        EasyTracker.getTracker().trackTiming("AsyncTasks", this.lngTiming, "Scraper", "Get Trending Torrents");
 
-    	if (objTorrents.size() == 0) {
+        if (objTorrents.size() == 0) {
 
-			Toast.makeText(this.objTrend,
-					R.string.unable_to_fetch, Toast.LENGTH_LONG)
-					.show();
+            Toast.makeText(this.objTrend,
+                    R.string.unable_to_fetch, Toast.LENGTH_LONG)
+                    .show();
 
-    	} else {
+        } else {
 
-	    	ListView lvwTorrents = (ListView) this.objTrend.findViewById(R.id.torrents);
-	    	this.objTrend.objAdapter = new TrendingTorrentsAdapter(this.objTrend, objTorrents);
-	    	lvwTorrents.setAdapter(this.objTrend.objAdapter);
-	    	//this.objTrend.invalidateOptionsMenu(); //TODO
+            ListView lvwTorrents = (ListView) this.objTrend.findViewById(R.id.torrents);
+            this.objTrend.objAdapter = new TrendingTorrentsAdapter(this.objTrend, objTorrents);
+            lvwTorrents.setAdapter(this.objTrend.objAdapter);
+            //this.objTrend.invalidateOptionsMenu(); //TODO
 
-	    	lvwTorrents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            lvwTorrents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-	    	    public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 
-	                if (Scraper.this.objExpander == null || Scraper.this.objExpander.hasEnded()) {
+                    if (Scraper.this.objExpander == null || Scraper.this.objExpander.hasEnded()) {
 
-    	                if(vewPrevious != null) {
-    	                    Scraper.this.objTrend.objAdapter.objRows.get(position).setExpanded(false);
-        	                View close = vewPrevious.findViewById(R.id.toolbar);
-        	                Scraper.this.objExpander = new ExpandAnimation(close, 500);
-        	                close.startAnimation(Scraper.this.objExpander);
-    	                }
+                        if(vewPrevious != null) {
+                            Scraper.this.objTrend.objAdapter.objRows.get(position).setExpanded(false);
+                            View close = vewPrevious.findViewById(R.id.toolbar);
+                            Scraper.this.objExpander = new ExpandAnimation(close, 500);
+                            close.startAnimation(Scraper.this.objExpander);
+                        }
 
-    	                Scraper.this.objTrend.objAdapter.objRows.get(position).setExpanded(true);
-    	                View toolbar = view.findViewById(R.id.toolbar);
-    	                Scraper.this.objExpander = new ExpandAnimation(toolbar, 500);
-    	                toolbar.startAnimation(Scraper.this.objExpander);
+                        Scraper.this.objTrend.objAdapter.objRows.get(position).setExpanded(true);
+                        View toolbar = view.findViewById(R.id.toolbar);
+                        Scraper.this.objExpander = new ExpandAnimation(toolbar, 500);
+                        toolbar.startAnimation(Scraper.this.objExpander);
 
-    	                vewPrevious = view;
+                        vewPrevious = view;
 
-	                }
+                    }
 
-	            }
+                }
 
-	        });
+            });
 
-    	}
+        }
 
     }
 

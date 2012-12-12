@@ -109,41 +109,41 @@ public class Trend extends SherlockActivity {
             ahcClient.setCookieStore(pscCookies);
             String[] strTypes = new String[] { "application/octet-stream", "application/x-bittorrent" };
             ahcClient.get(((URI) vewView.getTag()).toString(), new BinaryHttpResponseHandler(strTypes) {
-            	
-            	/*
-            	 * @see com.loopj.android.http.BinaryHttpResponseHandler#onSuccess(byte[])
-            	 */
+
+                /*
+                 * @see com.loopj.android.http.BinaryHttpResponseHandler#onSuccess(byte[])
+                 */
                 @Override
                 public void onSuccess(byte[] bytBytes) {
-                	
-                	File filTorrent = null;
-                	FileOutputStream fosOutput = null;
-                	
-					try {
-						
-						filTorrent = File.createTempFile("xxx", ".torrent", Trend.this.getCacheDir());
-						fosOutput = new FileOutputStream(filTorrent);
-						fosOutput.write(bytBytes);
-						fosOutput.close();
 
-	            		Intent ittEnqueue = new Intent(android.content.Intent.ACTION_VIEW);
-	            		ittEnqueue.setDataAndType(Uri.fromFile(filTorrent), "application/x-bittorrent");
-	            		Trend.this.startActivity(ittEnqueue);
-						
-					} catch (IOException e) {
-						sendFailureMessage(e, bytBytes);
-					} catch (ActivityNotFoundException e) {
-						Toast.makeText(Trend.this, getResources().getString(R.string.no_torrent_handlers), Toast.LENGTH_LONG).show();
-					} finally {
-						
-						try {
-							if (fosOutput != null)
-								fosOutput.close();
-						} catch (IOException e) {
-							sendFailureMessage(e, bytBytes);
-						}
-						
-					}
+                    File filTorrent = null;
+                    FileOutputStream fosOutput = null;
+
+                    try {
+
+                        filTorrent = File.createTempFile("xxx", ".torrent", Trend.this.getCacheDir());
+                        fosOutput = new FileOutputStream(filTorrent);
+                        fosOutput.write(bytBytes);
+                        fosOutput.close();
+
+                        Intent ittEnqueue = new Intent(android.content.Intent.ACTION_VIEW);
+                        ittEnqueue.setDataAndType(Uri.fromFile(filTorrent), "application/x-bittorrent");
+                        Trend.this.startActivity(ittEnqueue);
+
+                    } catch (IOException e) {
+                        sendFailureMessage(e, bytBytes);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(Trend.this, getResources().getString(R.string.no_torrent_handlers), Toast.LENGTH_LONG).show();
+                    } finally {
+
+                        try {
+                            if (fosOutput != null)
+                                fosOutput.close();
+                        } catch (IOException e) {
+                            sendFailureMessage(e, bytBytes);
+                        }
+
+                    }
 
                 }
 
@@ -152,13 +152,13 @@ public class Trend extends SherlockActivity {
                  */
                 @Override
                 public void onFailure(Throwable e, byte[] bytBytes) {
-                	
-                	Toast.makeText(Trend.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
-                	e.printStackTrace();
-            		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
-                	
+
+                    Toast.makeText(Trend.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
+
                 }
-                
+
             });
 
         }
@@ -188,8 +188,8 @@ public class Trend extends SherlockActivity {
     @Override
     public void onStart() {
 
-    	super.onStart();
-    	EasyTracker.getInstance().activityStart(this);
+        super.onStart();
+        EasyTracker.getInstance().activityStart(this);
 
     }
 
@@ -340,12 +340,12 @@ public class Trend extends SherlockActivity {
 
         } else if (itmMenuitem.getItemId() == R.id.settings) {
 
-			Intent ittIntent = new Intent(this, SettingsActivity.class );
-			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-				ittIntent.putExtra(SherlockPreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsFragment.class.getName());
-			}
-			ittIntent.putExtra(SherlockPreferenceActivity.EXTRA_NO_HEADERS, true );
-			startActivity(ittIntent);
+            Intent ittIntent = new Intent(this, SettingsActivity.class );
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+                ittIntent.putExtra(SherlockPreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsFragment.class.getName());
+            }
+            ittIntent.putExtra(SherlockPreferenceActivity.EXTRA_NO_HEADERS, true );
+            startActivity(ittIntent);
             return true;
 
         }
@@ -393,48 +393,48 @@ public class Trend extends SherlockActivity {
 
         public void onClick(final View vewView) {
 
-        	EasyTracker.getTracker().trackEvent("OnClicks", "Share", "Share Torrent", null);
+            EasyTracker.getTracker().trackEvent("OnClicks", "Share", "Share Torrent", null);
 
             AsyncHttpClient ahcClient = new AsyncHttpClient();
             PersistentCookieStore pscCookies = new PersistentCookieStore(Trend.this);
             ahcClient.setCookieStore(pscCookies);
             ahcClient.get(((URI) vewView.getTag()).toString(), new AsyncHttpResponseHandler() {
-            	
-            	/*
-            	 * @see com.loopj.android.http.BinaryHttpResponseHandler#onSuccess(byte[])
-            	 */
+
+                /*
+                 * @see com.loopj.android.http.BinaryHttpResponseHandler#onSuccess(byte[])
+                 */
                 @Override
                 public void onSuccess(String strResponse) {
-                	
-                	File filTorrent = null;
-                	FileOutputStream fosOutput = null;
-                	
-					try {
-						
-						filTorrent = File.createTempFile("xxx", ".html", Trend.this.getCacheDir());
-						fosOutput = new FileOutputStream(filTorrent);
-						fosOutput.write(strResponse.getBytes());
-						fosOutput.close();
 
-			            Intent ittShare = new Intent("android.intent.action.SEND");
-			            ittShare.setType("text/plain");
-			            ittShare.putExtra("android.intent.extra.TEXT", ((URI) vewView.getTag()).toString());
-			            startActivity(Intent.createChooser(ittShare, "Share using"));
-						
-					} catch (IOException e) {
-						sendFailureMessage(e, strResponse);
-					} catch (ActivityNotFoundException e) {
-						Toast.makeText(Trend.this, getResources().getString(R.string.no_torrent_handlers), Toast.LENGTH_LONG).show();
-					} finally {
-						
-						try {
-							if (fosOutput != null)
-								fosOutput.close();
-						} catch (IOException e) {
-							sendFailureMessage(e, strResponse);
-						}
-						
-					}
+                    File filTorrent = null;
+                    FileOutputStream fosOutput = null;
+
+                    try {
+
+                        filTorrent = File.createTempFile("xxx", ".html", Trend.this.getCacheDir());
+                        fosOutput = new FileOutputStream(filTorrent);
+                        fosOutput.write(strResponse.getBytes());
+                        fosOutput.close();
+
+                        Intent ittShare = new Intent("android.intent.action.SEND");
+                        ittShare.setType("text/plain");
+                        ittShare.putExtra("android.intent.extra.TEXT", ((URI) vewView.getTag()).toString());
+                        startActivity(Intent.createChooser(ittShare, "Share using"));
+
+                    } catch (IOException e) {
+                        sendFailureMessage(e, strResponse);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(Trend.this, getResources().getString(R.string.no_torrent_handlers), Toast.LENGTH_LONG).show();
+                    } finally {
+
+                        try {
+                            if (fosOutput != null)
+                                fosOutput.close();
+                        } catch (IOException e) {
+                            sendFailureMessage(e, strResponse);
+                        }
+
+                    }
 
                 }
 
@@ -443,13 +443,13 @@ public class Trend extends SherlockActivity {
                  */
                 @Override
                 public void onFailure(Throwable e, String strResponse) {
-                	
-                	Toast.makeText(Trend.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
-                	e.printStackTrace();
-            		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
-                	
+
+                    Toast.makeText(Trend.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
+
                 }
-                
+
             });
 
         }

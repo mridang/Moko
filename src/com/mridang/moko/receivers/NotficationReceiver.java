@@ -57,10 +57,10 @@ public class NotficationReceiver extends BroadcastReceiver {
                     mBuilder.setOngoing(true);
                     nfmManager.notify(TORRENTLEECH_NOTIFICATION_ID, mBuilder.getNotification());
 
-				} catch (Exception e) {
-					Log.w("receivers.NotificationReceiver", e);
-					EasyTracker.getTracker().trackException(e.getMessage(), e, false);
-				}
+                } catch (Exception e) {
+                    Log.w("receivers.NotificationReceiver", e);
+                    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
+                }
 
             } else {
 

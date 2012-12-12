@@ -25,9 +25,9 @@ import com.loopj.android.http.PersistentCookieStore;
 @SuppressLint("NewApi")
 public class Downloader extends AsyncTask<Uri, Integer, Request> {
 
-	/*
-	 * The context of the calling activity
-	 */
+    /*
+     * The context of the calling activity
+     */
     private Context ctxContext = null;
 
     /*
@@ -38,35 +38,35 @@ public class Downloader extends AsyncTask<Uri, Integer, Request> {
 
         Log.d("asynctasks.Downloader", String.format("Trying to download: %s", uriTorrent[0].toString()));
 
-    	try {
+        try {
 
             CookieSyncManager.createInstance(this.ctxContext);
 
             Request rqtRequest = new Request(uriTorrent[0]);
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 rqtRequest.setShowRunningNotification(true);
-	        } else {
-	            rqtRequest.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-	        }
+            } else {
+                rqtRequest.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            }
             rqtRequest.setMimeType("application/x-bittorrent");
             rqtRequest.setVisibleInDownloadsUi(true);
 
             PersistentCookieStore pscJar = new PersistentCookieStore(this.ctxContext);
-    	    SystemClock.sleep(1000);
+            SystemClock.sleep(1000);
 
             for (Cookie cooCookie : pscJar.getCookies())
-            	rqtRequest.addRequestHeader(cooCookie.getName(), cooCookie.getValue());
+                rqtRequest.addRequestHeader(cooCookie.getName(), cooCookie.getValue());
 
             CookieSyncManager.getInstance().sync();
 
-    	    return rqtRequest;
+            return rqtRequest;
 
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		EasyTracker.getTracker().trackException(e.getMessage(), e, false);
-    	}
+        } catch (Exception e) {
+            e.printStackTrace();
+            EasyTracker.getTracker().trackException(e.getMessage(), e, false);
+        }
 
-		return null;
+        return null;
 
     }
 
@@ -77,18 +77,18 @@ public class Downloader extends AsyncTask<Uri, Integer, Request> {
      */
     public Downloader(Activity objContext) {
 
-    	this.ctxContext = objContext;
+        this.ctxContext = objContext;
 
     }
 
     /*
      * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
      */
-	@Override
+    @Override
     public void onPostExecute(Request rqtRequest) {
 
-		DownloadManager dlmManager = (DownloadManager) this.ctxContext.getSystemService(Context.DOWNLOAD_SERVICE);
-		dlmManager.enqueue(rqtRequest);
+        DownloadManager dlmManager = (DownloadManager) this.ctxContext.getSystemService(Context.DOWNLOAD_SERVICE);
+        dlmManager.enqueue(rqtRequest);
 
     }
 

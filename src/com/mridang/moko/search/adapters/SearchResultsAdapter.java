@@ -26,21 +26,21 @@ import com.mridang.moko.structures.Torrent;
  */
 public class SearchResultsAdapter extends BaseAdapter {
 
-	/*
-	 * The layout inflater for inflating the listview rows
-	 */
-	private final LayoutInflater linInflater;
-	/*
-	 * The array containing the rows
-	 */
-	public ArrayList<Torrent> objResults;
-	/*
-	 * The array containing the rows
-	 */
-	public ArrayList<Row> objRows;
-	/*
-	 * The instance of the calling class
-	 */
+    /*
+     * The layout inflater for inflating the listview rows
+     */
+    private final LayoutInflater linInflater;
+    /*
+     * The array containing the rows
+     */
+    public ArrayList<Torrent> objResults;
+    /*
+     * The array containing the rows
+     */
+    public ArrayList<Row> objRows;
+    /*
+     * The instance of the calling class
+     */
     private Search ctxContext = null;
     /*
      * The holder to hold intance of a row layout
@@ -67,20 +67,20 @@ public class SearchResultsAdapter extends BaseAdapter {
      */
     Boolean booHasEnqueuer = true;
 
-	/*
-	 * Constructor
-	 */
-	public SearchResultsAdapter(Search ctxContext, ArrayList<Torrent> objResults) {
+    /*
+     * Constructor
+     */
+    public SearchResultsAdapter(Search ctxContext, ArrayList<Torrent> objResults) {
 
-	    linInflater = LayoutInflater.from(ctxContext);
-		this.ctxContext = ctxContext;
-		this.objResults = objResults;
-		this.objRows = ResultsManager.process(new ArrayList<Torrent>(this.objResults),
-				this.ctxContext.srtSort, this.ctxContext.fltFilter,
-				this.ctxContext.grpGroup);
+        linInflater = LayoutInflater.from(ctxContext);
+        this.ctxContext = ctxContext;
+        this.objResults = objResults;
+        this.objRows = ResultsManager.process(new ArrayList<Torrent>(this.objResults),
+                this.ctxContext.srtSort, this.ctxContext.fltFilter,
+                this.ctxContext.grpGroup);
 
-		if (this.objRows.size() == 0)
-		    this.ctxContext.showFilters();
+        if (this.objRows.size() == 0)
+            this.ctxContext.showFilters();
 
         try {
 
@@ -93,7 +93,7 @@ public class SearchResultsAdapter extends BaseAdapter {
 
         }
 
-	}
+    }
 
     /*
      * @see android.widget.Adapter#getCount()
@@ -142,28 +142,28 @@ public class SearchResultsAdapter extends BaseAdapter {
 
     }
 
-	/*
-	 * @see android.widget.Adapter#notifyDataSetChanged()
-	 */
-	@Override
+    /*
+     * @see android.widget.Adapter#notifyDataSetChanged()
+     */
+    @Override
     public void notifyDataSetChanged() {
 
-		this.objRows = ResultsManager.process(new ArrayList<Torrent>(this.objResults),
-				this.ctxContext.srtSort, this.ctxContext.fltFilter,
-				this.ctxContext.grpGroup);
+        this.objRows = ResultsManager.process(new ArrayList<Torrent>(this.objResults),
+                this.ctxContext.srtSort, this.ctxContext.fltFilter,
+                this.ctxContext.grpGroup);
 
-		super.notifyDataSetChanged();
+        super.notifyDataSetChanged();
 
         if (this.objRows.size() == 0)
             this.ctxContext.showFilters();
 
-	}
+    }
 
-	/*
-	 * @see android.widget.Adapter#getView(int, android.view.View,
-	 * android.view.ViewGroup)
-	 */
-	public View getView(int intPosition, View vewView, ViewGroup vgrParent) {
+    /*
+     * @see android.widget.Adapter#getView(int, android.view.View,
+     * android.view.ViewGroup)
+     */
+    public View getView(int intPosition, View vewView, ViewGroup vgrParent) {
 
         if (this.objRows.get(intPosition) instanceof Section) {
 
@@ -240,6 +240,6 @@ public class SearchResultsAdapter extends BaseAdapter {
 
         }
 
-	}
+    }
 
 }

@@ -22,17 +22,17 @@ import com.mridang.moko.receivers.NotficationReceiver;
 
 public class SettingsActivity extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener {
 
-	/*
+    /*
      * @see android.app.Fragment#onResume()
      */
     @TargetApi(9)
-	@Override
+    @Override
     public void onResume() {
 
         super.onResume();
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB)
-        	return;
+            return;
 
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         SharedPreferences spePreferences = PreferenceManager.getDefaultSharedPreferences(this
@@ -54,84 +54,84 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
     /*
      * @see android.preference.PreferenceFragment#onCreate(android.os.Bundle)
      */
-	@Override
-	public void onCreate(Bundle bndState) {
+    @Override
+    public void onCreate(Bundle bndState) {
 
-		super.onCreate(bndState);
+        super.onCreate(bndState);
 
-		if (Build.VERSION.SDK_INT<Build.VERSION_CODES.HONEYCOMB) {
-			addPreferencesFromResource(R.xml.preferences);
-		}
+        if (Build.VERSION.SDK_INT<Build.VERSION_CODES.HONEYCOMB) {
+            addPreferencesFromResource(R.xml.preferences);
+        }
 
-	}
+    }
 
     /*
      * @see android.content.SharedPreferences.OnSharedPreferenceChangeListener#onSharedPreferenceChanged(android.content.SharedPreferences, java.lang.String)
      */
     @TargetApi(9)
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-    	if (key.equals("torrentleech_username")) {
+        if (key.equals("torrentleech_username")) {
             Preference pref = findPreference(key);
             EditTextPreference etpUsername = (EditTextPreference) pref;
             if (etpUsername.getText().isEmpty()) {
-            	etpUsername.setSummary(getResources().getString(R.string.enter_your_username));
+                etpUsername.setSummary(getResources().getString(R.string.enter_your_username));
             } else {
-	            pref.setSummary(etpUsername.getText());
+                pref.setSummary(etpUsername.getText());
             }
-    	}
+        }
 
         try {
 
             this.getApplicationContext().sendBroadcast(new Intent(this.getApplicationContext(), NotficationReceiver.class));
-        	DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
-        	String strFilename = dftFormat.format(new Date());
+            DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
+            String strFilename = dftFormat.format(new Date());
 
             if(this.getApplicationContext().getFileStreamPath(strFilename).exists()) {
-            	this.getApplicationContext().getFileStreamPath(strFilename).delete();
+                this.getApplicationContext().getFileStreamPath(strFilename).delete();
             }
 
         } catch (Exception e) {
            Log.e("fragments.SettingsFragment", "An error occurred when flusing the day's cache after a preference changed.", e);
         }
 
-    	if (key.equals("torrentleech_password")) {
+        if (key.equals("torrentleech_password")) {
             Preference pref = findPreference(key);
             EditTextPreference etpPassword = (EditTextPreference) pref;
             if (etpPassword.getText().isEmpty()) {
-            	etpPassword.setSummary(getResources().getString(R.string.enter_your_password));
+                etpPassword.setSummary(getResources().getString(R.string.enter_your_password));
             } else {
-	            pref.setSummary(etpPassword.getText().replaceAll("(?s).", "*"));
+                pref.setSummary(etpPassword.getText().replaceAll("(?s).", "*"));
             }
-    	}
+        }
 
     }
 
-	/*
-	 * @see android.preference.PreferenceActivity#onBuildHeaders(java.util.List)
-	 */
-	@Override
-	public void onBuildHeaders(List<Header> lstHeaders) {
+    /*
+     * @see android.preference.PreferenceActivity#onBuildHeaders(java.util.List)
+     */
+    @Override
+    public void onBuildHeaders(List<Header> lstHeaders) {
 
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-	  	    loadHeadersFromResource(R.xml.headers, lstHeaders);
-		}
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+              loadHeadersFromResource(R.xml.headers, lstHeaders);
+        }
 
-		super.onBuildHeaders(lstHeaders);
+        super.onBuildHeaders(lstHeaders);
 
-	}
+    }
 
     /*
      * @see android.app.Fragment#onPause()
      */
     @TargetApi(9)
-	@Override
+    @Override
     public void onPause() {
 
         super.onPause();
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB)
-        	return;
+            return;
 
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(
                 this);

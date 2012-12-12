@@ -16,8 +16,8 @@ public class Torrent implements Row, Serializable {
     /*
      * A serialization identifier
      */
-	private static final long serialVersionUID = -2977539441063094354L;
-	/*
+    private static final long serialVersionUID = -2977539441063094354L;
+    /*
      * The name of the torrent
      */
     private final String strName;

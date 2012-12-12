@@ -24,8 +24,8 @@ import com.mridang.moko.structures.Torrent;
  */
 public class Kickass extends Indexer {
 
-	/* The URL of the scrape page */
-	private final String SCRAPE_URL = "http://kat.ph/";
+    /* The URL of the scrape page */
+    private final String SCRAPE_URL = "http://kat.ph/";
 
     /*
      * Initializes this task
@@ -38,142 +38,142 @@ public class Kickass extends Indexer {
 
     }
 
-	/*
-	 * This method is the method that searches the site.
-	 *
-	 * @return a list of torrents.
-	 */
-	public ArrayList<Torrent> doScrape() throws Exception {
+    /*
+     * This method is the method that searches the site.
+     *
+     * @return a list of torrents.
+     */
+    public ArrayList<Torrent> doScrape() throws Exception {
 
-		Document objDocument;
-		ArrayList<Torrent> objTorrents = new ArrayList<Torrent>();
+        Document objDocument;
+        ArrayList<Torrent> objTorrents = new ArrayList<Torrent>();
         String strUrl = SCRAPE_URL;
 
-		Log.d("scrapers.Kickass", String.format("URL: %s", strUrl));
+        Log.d("scrapers.Kickass", String.format("URL: %s", strUrl));
 
-		try {
+        try {
 
-			Log.d("scrapers.Kickass", "Fetching page");
+            Log.d("scrapers.Kickass", "Fetching page");
 
-			objDocument = Jsoup.parse(super.doGet(strUrl, null), strUrl);
+            objDocument = Jsoup.parse(super.doGet(strUrl, null), strUrl);
 
-		} catch (Exception e) {
+        } catch (Exception e) {
 
-			Log.w("scrapers.Kickass", "Error fetching and parsing page", e);
-			throw e;
+            Log.w("scrapers.Kickass", "Error fetching and parsing page", e);
+            throw e;
 
-		}
+        }
 
-		for (Element eleTable : objDocument.select("table.data")) {
+        for (Element eleTable : objDocument.select("table.data")) {
 
-			Category catCategory = null;
+            Category catCategory = null;
 
-			if (eleTable.parent().previousElementSibling().text().contains("Movies"))
-				catCategory = Category.MOVIE;
-			else if (eleTable.parent().previousElementSibling().text().contains("Music"))
-				catCategory = Category.ALBUM;
-			else if (eleTable.parent().previousElementSibling().text().contains("Show"))
-				catCategory = Category.SHOW;
-			else if (eleTable.parent().previousElementSibling().text().contains("Games"))
-				catCategory = Category.GAME;
-			else if (eleTable.parent().previousElementSibling().text().contains("Applications"))
-				catCategory = Category.APP;
-			else
-				continue;
+            if (eleTable.parent().previousElementSibling().text().contains("Movies"))
+                catCategory = Category.MOVIE;
+            else if (eleTable.parent().previousElementSibling().text().contains("Music"))
+                catCategory = Category.ALBUM;
+            else if (eleTable.parent().previousElementSibling().text().contains("Show"))
+                catCategory = Category.SHOW;
+            else if (eleTable.parent().previousElementSibling().text().contains("Games"))
+                catCategory = Category.GAME;
+            else if (eleTable.parent().previousElementSibling().text().contains("Applications"))
+                catCategory = Category.APP;
+            else
+                continue;
 
-			for (Element div : eleTable.select("tr:gt(0)")) {
+            for (Element div : eleTable.select("tr:gt(0)")) {
 
-				Log.d("scrapers.Kickass", "Found a row");
+                Log.d("scrapers.Kickass", "Found a row");
 
-				try {
+                try {
 
-					Boolean booPrivate = false;
+                    Boolean booPrivate = false;
 
-					String strName = "";
-					try {
-						strName = div.select("div.torrentname a:eq(1)").text();
-					} catch (Exception e) {
-						throw e;
-					}
+                    String strName = "";
+                    try {
+                        strName = div.select("div.torrentname a:eq(1)").text();
+                    } catch (Exception e) {
+                        throw e;
+                    }
 
-					Date datDate = null;
-					try {
-						datDate = DateConverter.parseHumanDate(div.select("td:eq(3)").text());
-					} catch (Exception e) {
-						throw e;
-					}
+                    Date datDate = null;
+                    try {
+                        datDate = DateConverter.parseHumanDate(div.select("td:eq(3)").text());
+                    } catch (Exception e) {
+                        throw e;
+                    }
 
-					Integer intSeeders = 0;
-					try {
-						intSeeders = Integer
-								.parseInt(div.select("td:eq(4)").text());
-					} catch (Exception e) {
-						throw e;
-					}
+                    Integer intSeeders = 0;
+                    try {
+                        intSeeders = Integer
+                                .parseInt(div.select("td:eq(4)").text());
+                    } catch (Exception e) {
+                        throw e;
+                    }
 
-					Boolean booVerified = null;
-					try {
-						booVerified = div.select("a.iverify").first() == null ? false
-								: true;
-					} catch (Exception e) {
-						throw e;
-					}
+                    Boolean booVerified = null;
+                    try {
+                        booVerified = div.select("a.iverify").first() == null ? false
+                                : true;
+                    } catch (Exception e) {
+                        throw e;
+                    }
 
-					Integer intLeechers = 0;
-					try {
-						intLeechers = Integer.parseInt(div.select("td:eq(5)")
-								.text());
-					} catch (Exception e) {
-						throw e;
-					}
+                    Integer intLeechers = 0;
+                    try {
+                        intLeechers = Integer.parseInt(div.select("td:eq(5)")
+                                .text());
+                    } catch (Exception e) {
+                        throw e;
+                    }
 
-					URI uriLocation = null;
-					try {
-						uriLocation = new URI(div.select("a.idownload").last()
-								.attr("abs:href").toString().split("\\?")[0]);
-					} catch (Exception e) {
-						throw e;
-					}
+                    URI uriLocation = null;
+                    try {
+                        uriLocation = new URI(div.select("a.idownload").last()
+                                .attr("abs:href").toString().split("\\?")[0]);
+                    } catch (Exception e) {
+                        throw e;
+                    }
 
-					Long lngSize = null;
-					try {
-						lngSize = SizeConverter.parseSize(div.select(
-								"td:eq(1)").text());
-					} catch (Exception e) {
-						throw e;
-					}
+                    Long lngSize = null;
+                    try {
+                        lngSize = SizeConverter.parseSize(div.select(
+                                "td:eq(1)").text());
+                    } catch (Exception e) {
+                        throw e;
+                    }
 
-					URI uriWebpage = null;
+                    URI uriWebpage = null;
 
-					try {
-						uriWebpage = new URI(div.select("div.torrentname a:eq(1)").attr("abs:href"));
-					} catch (Exception e) {
-						throw e;
-					}
+                    try {
+                        uriWebpage = new URI(div.select("div.torrentname a:eq(1)").attr("abs:href"));
+                    } catch (Exception e) {
+                        throw e;
+                    }
 
-					String strIndexer = "Kickass Torrents";
+                    String strIndexer = "Kickass Torrents";
 
-					objTorrents.add(new Torrent(catCategory, strName, uriLocation,
-							intSeeders, intLeechers, datDate, booPrivate,
-							strIndexer, lngSize, booVerified, uriWebpage));
+                    objTorrents.add(new Torrent(catCategory, strName, uriLocation,
+                            intSeeders, intLeechers, datDate, booPrivate,
+                            strIndexer, lngSize, booVerified, uriWebpage));
 
-				} catch (Exception e) {
+                } catch (Exception e) {
 
-				    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
-					Log.w("scrapers.Kickass", "Error parsing row", e);
+                    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
+                    Log.w("scrapers.Kickass", "Error parsing row", e);
 
-				}
+                }
 
-			}
+            }
 
-		}
+        }
 
-		Log.d("scrapers.Kickass", String.format("Scraped %d rows", objTorrents.size()));
+        Log.d("scrapers.Kickass", String.format("Scraped %d rows", objTorrents.size()));
 
-		Collections.reverse(objTorrents);
+        Collections.reverse(objTorrents);
 
-		return objTorrents;
+        return objTorrents;
 
-	}
+    }
 
 }

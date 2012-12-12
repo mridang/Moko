@@ -35,26 +35,26 @@ import com.mridang.moko.structures.Torrent;
  */
 public class Indexer {
 
-	/*
-	 * Custom exception for unable-to-login issues
-	 */
-	@SuppressWarnings("serial")
-	public class LoginException extends Exception {
+    /*
+     * Custom exception for unable-to-login issues
+     */
+    @SuppressWarnings("serial")
+    public class LoginException extends Exception {
 
-		/*
-		 * @see java.lang.Exception#Exception(String detailMessage)
-		 */
-		public LoginException(String strMessage) {
+        /*
+         * @see java.lang.Exception#Exception(String detailMessage)
+         */
+        public LoginException(String strMessage) {
 
-			super(strMessage);
+            super(strMessage);
 
-		}
+        }
 
-	}
+    }
 
-	/*
-	 * The context of the calling class
-	 */
+    /*
+     * The context of the calling class
+     */
     protected Context ctxContext = null;
 
     /*
@@ -62,71 +62,71 @@ public class Indexer {
      *
      * @param  objContext  the instance of the calling Search class
      */
-	public Indexer(Context ctxContext) {
+    public Indexer(Context ctxContext) {
 
-		this.ctxContext = ctxContext;
+        this.ctxContext = ctxContext;
 
-	}
+    }
 
-	/*
-	 * This method makes a HTTP POST request and is generally used for logging
-	 * in.
-	 *
-	 * @param  strUrl    the URL of the page to which to POST
-	 * @param  lstParams a list of name-value pairs to post
-	 * @return String    the results of the POST request
-	 */
-	public String doPost(String strUrl, List<NameValuePair> lstParams) throws Exception {
+    /*
+     * This method makes a HTTP POST request and is generally used for logging
+     * in.
+     *
+     * @param  strUrl    the URL of the page to which to POST
+     * @param  lstParams a list of name-value pairs to post
+     * @return String    the results of the POST request
+     */
+    public String doPost(String strUrl, List<NameValuePair> lstParams) throws Exception {
 
         Integer intTry = 0;
 
         while (intTry < 3) {
 
-        	intTry += 1;
+            intTry += 1;
 
             try {
 
-            	String strResponse = null;
+                String strResponse = null;
 
-            	HttpParams htpParameters = new BasicHttpParams();
-            	// Set the timeout in milliseconds until a connection is established.
-            	HttpConnectionParams.setConnectionTimeout(htpParameters, 10000);
-            	// Set the default socket timeout (SO_TIMEOUT) 
-            	HttpConnectionParams.setSoTimeout(htpParameters, 10000);                 	
-            	
-				HttpPost htpPost = new HttpPost(strUrl);
-				htpPost.setEntity(new UrlEncodedFormEntity(lstParams));
-				htpPost.addHeader("Accept-Encoding", "gzip");
-				htpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1");
+                HttpParams htpParameters = new BasicHttpParams();
+                // Set the timeout in milliseconds until a connection is established.
+                HttpConnectionParams.setConnectionTimeout(htpParameters, 10000);
+                // Set the default socket timeout (SO_TIMEOUT)
+                HttpConnectionParams.setSoTimeout(htpParameters, 10000);
 
-				DefaultHttpClient dhcClient = new DefaultHttpClient(htpParameters);
-				dhcClient.addResponseInterceptor(new Decompressor(), 0);
+                HttpPost htpPost = new HttpPost(strUrl);
+                htpPost.setEntity(new UrlEncodedFormEntity(lstParams));
+                htpPost.addHeader("Accept-Encoding", "gzip");
+                htpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1");
 
-				PersistentCookieStore pscStore = new PersistentCookieStore(this.ctxContext);
-				dhcClient.setCookieStore(pscStore);
+                DefaultHttpClient dhcClient = new DefaultHttpClient(htpParameters);
+                dhcClient.addResponseInterceptor(new Decompressor(), 0);
 
-				HttpResponse resResponse = dhcClient.execute(htpPost);
-				strResponse = EntityUtils.toString(resResponse.getEntity());
+                PersistentCookieStore pscStore = new PersistentCookieStore(this.ctxContext);
+                dhcClient.setCookieStore(pscStore);
 
-				return strResponse;
+                HttpResponse resResponse = dhcClient.execute(htpPost);
+                strResponse = EntityUtils.toString(resResponse.getEntity());
 
-		    } catch (Exception e) {
+                return strResponse;
 
-		    	e.printStackTrace();
+            } catch (Exception e) {
 
-		        if (intTry < 3) {
-		        	Log.v("generics.Indexer", String.format("Attempt #%d", intTry));
-		         } else {
-		        	 throw e;
-		         }
+                e.printStackTrace();
 
-		    }
+                if (intTry < 3) {
+                    Log.v("generics.Indexer", String.format("Attempt #%d", intTry));
+                 } else {
+                     throw e;
+                 }
 
-		}
+            }
 
-		return null;
+        }
 
-	}
+        return null;
+
+    }
 
     /*
      * This class is a custom HTTP response intercepter that will decompress
@@ -186,55 +186,55 @@ public class Indexer {
 
     }
 
-	/*
-	 * This method makes a HTTP GET request and is generally used for logging
-	 * in.
-	 *
-	 * @param  strUrl    the URL of the page to which to GET
-	 * @param  lstParams a list of name-value pairs to post
-	 * @return String    the results of the GET request
-	 */
-	public String doGet(String strUrl, List<NameValuePair> lstParams) throws Exception {
+    /*
+     * This method makes a HTTP GET request and is generally used for logging
+     * in.
+     *
+     * @param  strUrl    the URL of the page to which to GET
+     * @param  lstParams a list of name-value pairs to post
+     * @return String    the results of the GET request
+     */
+    public String doGet(String strUrl, List<NameValuePair> lstParams) throws Exception {
 
         Integer intTry = 0;
 
         while (intTry < 3) {
 
-        	intTry += 1;
+            intTry += 1;
 
             try {
 
-            	String strResponse = null;
+                String strResponse = null;
 
-            	HttpParams htpParameters = new BasicHttpParams();
-            	// Set the timeout in milliseconds until a connection is established.
-            	HttpConnectionParams.setConnectionTimeout(htpParameters, 10000);
-            	// Set the default socket timeout (SO_TIMEOUT) 
-            	HttpConnectionParams.setSoTimeout(htpParameters, 10000);            	
-            	
-    			HttpGet htpGet = new HttpGet(strUrl);
-    			htpGet.addHeader("Accept-Encoding", "gzip");
-    			htpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1");
+                HttpParams htpParameters = new BasicHttpParams();
+                // Set the timeout in milliseconds until a connection is established.
+                HttpConnectionParams.setConnectionTimeout(htpParameters, 10000);
+                // Set the default socket timeout (SO_TIMEOUT)
+                HttpConnectionParams.setSoTimeout(htpParameters, 10000);
 
-    			DefaultHttpClient dhcClient = new DefaultHttpClient(htpParameters);
-    			dhcClient.addResponseInterceptor(new Decompressor(), 0);
+                HttpGet htpGet = new HttpGet(strUrl);
+                htpGet.addHeader("Accept-Encoding", "gzip");
+                htpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1");
 
-    			PersistentCookieStore pscStore = new PersistentCookieStore(this.ctxContext);
-    			dhcClient.setCookieStore(pscStore);
+                DefaultHttpClient dhcClient = new DefaultHttpClient(htpParameters);
+                dhcClient.addResponseInterceptor(new Decompressor(), 0);
 
-    			HttpResponse resResponse = dhcClient.execute(htpGet);
-    			strResponse = EntityUtils.toString(resResponse.getEntity());
+                PersistentCookieStore pscStore = new PersistentCookieStore(this.ctxContext);
+                dhcClient.setCookieStore(pscStore);
 
-        		return strResponse;
+                HttpResponse resResponse = dhcClient.execute(htpGet);
+                strResponse = EntityUtils.toString(resResponse.getEntity());
+
+                return strResponse;
 
             } catch (Exception e) {
 
-            	e.printStackTrace();
+                e.printStackTrace();
 
                 if (intTry < 3) {
-                	Log.v("generics.Indexer", String.format("Attempt #%d", intTry));
+                    Log.v("generics.Indexer", String.format("Attempt #%d", intTry));
                  } else {
-                	 throw e;
+                     throw e;
                  }
 
             }
@@ -243,19 +243,19 @@ public class Indexer {
 
         return null;
 
-	}
+    }
 
-	/*
-	 * This method is the method that searches the site.
-	 *
-	 * @param strQuery the search string that should be used
-	 *
-	 * @return a list of results.
-	 */
-	public ArrayList<Torrent> doSearch(String strQuery) {
+    /*
+     * This method is the method that searches the site.
+     *
+     * @param strQuery the search string that should be used
+     *
+     * @return a list of results.
+     */
+    public ArrayList<Torrent> doSearch(String strQuery) {
 
-		return null;
+        return null;
 
-	}
+    }
 
 }
