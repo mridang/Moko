@@ -24,7 +24,7 @@
         android:id="@+id/search"
         android:actionViewClass="com.actionbarsherlock.widget.SearchView"
         android:icon="@android:drawable/ic_menu_search"
-        android:showAsAction="always|withText"
+        android:showAsAction="ifRoom|withText"
         android:title="Search"/>
 
 </menu>
