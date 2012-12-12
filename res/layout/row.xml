@@ -70,11 +70,6 @@
                 style="@style/cellbottom"
                 android:paddingLeft="3dp"
                 android:paddingRight="15dp" />
-
-            <com.mridang.moko.widgets.Octicon
-                android:id="@+id/verified"
-                style="@style/octicon"
-                android:text="@string/verified" />
             
         </LinearLayout>
         
