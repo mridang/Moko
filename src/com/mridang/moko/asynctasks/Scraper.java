@@ -97,7 +97,7 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
     	ExecutorService esrExecutor = Executors.newFixedThreadPool(2);
     	Set<Callable<ArrayList<Torrent>>> setCallables = new HashSet<Callable<ArrayList<Torrent>>>();
 
-		if (this.shpSettings.getBoolean("use_kickass", true)) {
+		if (this.shpSettings.getBoolean("use_kickasstorrents", true)) {
 
 	    	setCallables.add(new Callable<ArrayList<Torrent>>() {
 
@@ -124,8 +124,8 @@ public class Scraper extends AsyncTask<String, Integer, ArrayList<Torrent>> {
 	    	});
 
 		}
-
-		if (this.shpSettings.getBoolean("use_fenopy", true)) {
+		
+		if (this.shpSettings.getBoolean("use_fenopytorrents", true)) {
 
 	    	setCallables.add(new Callable<ArrayList<Torrent>>() {
 
