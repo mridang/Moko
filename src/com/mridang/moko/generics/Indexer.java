@@ -52,8 +52,10 @@ public class Indexer {
 
 	}
 
-	/* The context of the calling class */
-    private Context ctxContext = null;
+	/*
+	 * The context of the calling class
+	 */
+    protected Context ctxContext = null;
 
     /*
      * Initializes this task
