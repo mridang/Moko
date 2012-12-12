@@ -1,8 +1,12 @@
 package com.mridang.moko.activities;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Build;
@@ -10,9 +14,11 @@ import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.mridang.moko.R;
+import com.mridang.moko.receivers.NotficationReceiver;
 
 public class SettingsActivity extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener {
 
@@ -27,7 +33,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB)
         	return;
-        
+
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         SharedPreferences spePreferences = PreferenceManager.getDefaultSharedPreferences(this
                 .getApplicationContext());
@@ -50,7 +56,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
      */
 	@Override
 	public void onCreate(Bundle bndState) {
-		
+
 		super.onCreate(bndState);
 
 		if (Build.VERSION.SDK_INT<Build.VERSION_CODES.HONEYCOMB) {
@@ -75,6 +81,20 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
             }
     	}
 
+        try {
+
+            this.getApplicationContext().sendBroadcast(new Intent(this.getApplicationContext(), NotficationReceiver.class));
+        	DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
+        	String strFilename = dftFormat.format(new Date());
+
+            if(this.getApplicationContext().getFileStreamPath(strFilename).exists()) {
+            	this.getApplicationContext().getFileStreamPath(strFilename).delete();
+            }
+
+        } catch (Exception e) {
+           Log.e("fragments.SettingsFragment", "An error occurred when flusing the day's cache after a preference changed.", e);
+        }
+
     	if (key.equals("torrentleech_password")) {
             Preference pref = findPreference(key);
             EditTextPreference etpPassword = (EditTextPreference) pref;
@@ -96,11 +116,11 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
 	  	    loadHeadersFromResource(R.xml.headers, lstHeaders);
 		}
-		
+
 		super.onBuildHeaders(lstHeaders);
 
 	}
-    
+
     /*
      * @see android.app.Fragment#onPause()
      */
@@ -112,7 +132,7 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB)
         	return;
-        
+
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(
                 this);
         SharedPreferences spePreferences = PreferenceManager.getDefaultSharedPreferences(this
@@ -129,5 +149,5 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
             etpPassword.setSummary(spePreferences.getString("torrentleech_password", "")
                     .replaceAll("(?s).", "*"));
     }
-	
+
 }
