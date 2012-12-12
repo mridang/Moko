@@ -11,14 +11,17 @@ import org.apache.http.NameValuePair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.mridang.moko.enums.Category;
 import com.mridang.moko.generics.Indexer;
 import com.mridang.moko.helpers.SizeConverter;
-import com.mridang.moko.search.Search;
 import com.mridang.moko.structures.Torrent;
 
 /*
@@ -26,19 +29,27 @@ import com.mridang.moko.structures.Torrent;
  */
 public class Torleech extends Indexer {
 
-	/* The URL of the search page */
+	/* 
+	 * The URL of the search page 
+	 */
 	private final String SEARCH_URL = "http://www.torrentleech.org/torrents/browse/index/query/%s/";
-	/* The URL of the login page */
+	/* 
+	 * The URL of the login page
+	 */
 	private final String LOGIN_URL = "http://www.torrentleech.org/user/account/login/";
+	/* 
+	 * The URL of the ratio page
+	 */
+	private final String RATIO_URL = "http://www.torrentleech.org/";
 
     /*
      * Initializes this task
      *
      * @param  objContext  the instance of the calling Search class
      */
-    public Torleech(Search objContext) {
+    public Torleech(Context ctxContext) {
 
-        super(objContext);
+        super(ctxContext);
 
     }
 
@@ -58,17 +69,16 @@ public class Torleech extends Indexer {
 	/*
 	 * This method log the user in to the site
 	 *
-	 * @param  strUsername The username to use for logging in
-	 * @param  strPassword The password to use for logging in
 	 * @return A Boolean value indicating whether the login was successful
 	 */
-	private void logIn(final String strUsername, final String strPassword) throws Indexer.LoginException {
+	private void logIn() throws Indexer.LoginException {
 
 		try {
 
 			Log.d("plugins.Torleech", "Logging in");
 
 		    List<NameValuePair> lstCredentials = new ArrayList<NameValuePair>();
+		    final SharedPreferences speSettings = PreferenceManager.getDefaultSharedPreferences(this.ctxContext);
 
 		    lstCredentials.add(new NameValuePair() {
 
@@ -77,7 +87,7 @@ public class Torleech extends Indexer {
 				}
 
 				public String getValue() {
-					return strUsername;
+					return speSettings.getString("torrentleech_username", null);
 				}
 
 			});
@@ -89,7 +99,7 @@ public class Torleech extends Indexer {
 				}
 
 				public String getValue() {
-					return strPassword;
+					return speSettings.getString("torrentleech_password", null);
 				}
 
 			});
@@ -144,15 +154,80 @@ public class Torleech extends Indexer {
 	}
 
 	/*
+	 * This method fetches the ratio from the site.
+	 */
+	public Float getRatio() throws Exception {
+
+		Document objDocument;
+		Float fltRatio = null;
+        String strUrl = RATIO_URL;
+        
+		Log.d("plugins.Torleech", String.format("URL: %s", strUrl));
+
+		try {
+
+			Log.d("plugins.Torleech", "Fetching page");
+
+			objDocument = Jsoup.parse(super.doGet(strUrl, null));
+
+		} catch (Exception e) {
+
+			Log.w("plugins.Torleech", "Error fetching and parsing page", e);
+			throw e;
+
+		}
+
+		Log.d("plugins.Torleech", "Checking for authentication status");
+
+		if (this.isLoggedIn(objDocument) == false) {
+
+			Log.d("plugins.Torleech", "Not authenticated");
+			this.logIn();
+
+			try {
+
+				Log.d("plugins.Torleech", "Fetching page again");
+
+				objDocument = Jsoup.parse(super.doGet(strUrl, null));
+
+			} catch (Exception e) {
+
+				Log.w("plugins.Torleech", "Error fetching and parsing page", e);
+				throw e;
+
+			}
+
+		}
+
+		Log.d("plugins.Torleech", "Authenticated");
+		
+		try {
+			
+			Element eleMembar = objDocument.select("div#memberBar div.left span.memberbar_alt").get(1);
+			Node nodRatio = eleMembar.nextSibling();
+			String strRatio = nodRatio.toString().replaceAll("&nbsp;", "").trim();
+			fltRatio = Float.parseFloat(strRatio);
+			Log.d("plugins.Torleech", String.format("Ratio is %f", fltRatio));
+		
+		} catch (Exception e) {
+
+			Log.w("plugins.Torleech", "Error extracting ratio", e);
+			throw e;
+
+		}
+			
+		return fltRatio;
+		
+	}
+	
+	/*
 	 * This method is the method that searches the site.
 	 *
 	 * @param  strQuery   the search string that should be used
 	 * @param  catSection the section in which to search
-	 * @param  strUsername The username to use for logging in
-	 * @param  strPassword The password to use for logging in
 	 * @return A list of results scraped from the site.
 	 */
-	public ArrayList<Torrent> doSearch(String strQuery, Category catSection, String strUsername, String strPassword) throws Exception {
+	public ArrayList<Torrent> doSearch(String strQuery, Category catSection) throws Exception {
 
 		Document objDocument;
 		ArrayList<Torrent> objResults = new ArrayList<Torrent>();
@@ -213,7 +288,7 @@ public class Torleech extends Indexer {
 		if (this.isLoggedIn(objDocument) == false) {
 
 			Log.d("plugins.Torleech", "Not authenticated");
-			this.logIn(strUsername, strPassword);
+			this.logIn();
 
 			try {
 
@@ -253,6 +328,8 @@ public class Torleech extends Indexer {
 				try {
 					datDate = new Date();
 					System.out.println(div.select("td.name").text());
+					System.out.println(div.select("td.quickdownload a").last()
+							.attr("abs:href"));
 					//TODO System.out.println(div.select("td.name").text().replaceAll(".*(\\d\\d\\d\\d-\\d\\d-\\d\\d).*", "x"));
 				} catch (Exception e) {
 					throw e;
