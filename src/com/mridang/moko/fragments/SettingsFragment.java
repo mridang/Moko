@@ -1,6 +1,11 @@
 package com.mridang.moko.fragments;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -8,8 +13,10 @@ import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.mridang.moko.R;
+import com.mridang.moko.receivers.NotficationReceiver;
 
 @TargetApi(11)
 public class SettingsFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
@@ -71,6 +78,20 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 	            pref.setSummary(etpUsername.getText());
             }
     	}
+
+        try {
+
+            this.getActivity().sendBroadcast(new Intent(this.getActivity(), NotficationReceiver.class));
+        	DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
+        	String strFilename = dftFormat.format(new Date());
+
+            if(this.getActivity().getApplicationContext().getFileStreamPath(strFilename).exists()) {
+            	this.getActivity().getApplicationContext().getFileStreamPath(strFilename).delete();
+            }
+
+        } catch (Exception e) {
+           Log.e("fragments.SettingsFragment", "An error occurred when flusing the day's cache after a preference changed.", e);
+        }
 
     	if (key.equals("torrentleech_password")) {
             Preference pref = findPreference(key);
