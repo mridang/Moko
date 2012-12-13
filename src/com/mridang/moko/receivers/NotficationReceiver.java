@@ -39,27 +39,34 @@ public class NotficationReceiver extends BroadcastReceiver {
 
                 Log.v("receivers.NotificationReceiver", "Torrentleech is in use.");
 
-                try {
+                if (PreferenceManager.getDefaultSharedPreferences(ctxContext).getString("torrentleech_username", "").length() > 4 
+                        && PreferenceManager.getDefaultSharedPreferences(ctxContext).getString("torrentleech_password", "").length() > 4) {
 
-                    Float fltRatio = (new Torleech(ctxContext)).getRatio();
-                    String strMessage = String.format(ctxContext.getString(R.string.your_ratio_is), fltRatio);
-                    String strAlert = String.format(ctxContext.getString(R.string.logged_in_to), "Torrentleech");
+                    Log.v("receivers.NotificationReceiver", "Credentials are configured.");
 
-                    NotificationManager nfmManager = (NotificationManager) ctxContext.getSystemService(Context.NOTIFICATION_SERVICE);
-                    PendingIntent contentIntent = PendingIntent.getActivity(ctxContext, 0, new Intent(), 0);
-                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ctxContext);
+                    try {
 
-                    mBuilder.setSmallIcon(R.drawable.ic_action_line_chart);
-                    mBuilder.setContentTitle("Torrentleech");
-                    mBuilder.setContentText(strMessage);
-                    mBuilder.setTicker(strAlert);
-                    mBuilder.setContentIntent(contentIntent);
-                    mBuilder.setOngoing(true);
-                    nfmManager.notify(TORRENTLEECH_NOTIFICATION_ID, mBuilder.getNotification());
+                        Float fltRatio = (new Torleech(ctxContext)).getRatio();
+                        String strMessage = String.format(ctxContext.getString(R.string.your_ratio_is), fltRatio);
+                        String strAlert = String.format(ctxContext.getString(R.string.logged_in_to), "Torrentleech");
 
-                } catch (Exception e) {
-                    Log.w("receivers.NotificationReceiver", e);
-                    EasyTracker.getTracker().trackException(e.getMessage(), e, false);
+                        NotificationManager nfmManager = (NotificationManager) ctxContext.getSystemService(Context.NOTIFICATION_SERVICE);
+                        PendingIntent contentIntent = PendingIntent.getActivity(ctxContext, 0, new Intent(), 0);
+                        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ctxContext);
+
+                        mBuilder.setSmallIcon(R.drawable.ic_action_line_chart);
+                        mBuilder.setContentTitle("Torrentleech");
+                        mBuilder.setContentText(strMessage);
+                        mBuilder.setTicker(strAlert);
+                        mBuilder.setContentIntent(contentIntent);
+                        mBuilder.setOngoing(true);
+                        nfmManager.notify(TORRENTLEECH_NOTIFICATION_ID, mBuilder.getNotification());
+
+                    } catch (Exception e) {
+                        Log.w("receivers.NotificationReceiver", e);
+                        EasyTracker.getTracker().trackException(e.getMessage(), e, false);
+                    }
+
                 }
 
             } else {
