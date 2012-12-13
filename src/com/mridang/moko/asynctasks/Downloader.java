@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.DownloadManager.Request;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,6 +17,7 @@ import android.webkit.CookieSyncManager;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.loopj.android.http.PersistentCookieStore;
+import com.mridang.moko.R;
 
 /*
  * This is the class used to download a torrent file.
@@ -29,7 +31,20 @@ public class Downloader extends AsyncTask<Uri, Integer, Request> {
      * The context of the calling activity
      */
     private Context ctxContext = null;
+    /*
+     * progress dialog to show user that the backup is processing.
+     */
+    private ProgressDialog pdgDialog;
 
+    /*
+     * @see android.os.AsyncTask#onPreExecute()
+     */
+    protected void onPreExecute() {
+
+        this.pdgDialog.show();
+
+    }
+    
     /*
      * @see android.os.AsyncTask#doInBackground(Params[])
      */
@@ -78,6 +93,16 @@ public class Downloader extends AsyncTask<Uri, Integer, Request> {
     public Downloader(Activity objContext) {
 
         this.ctxContext = objContext;
+        this.pdgDialog = new ProgressDialog(objContext);
+        this.pdgDialog.setIndeterminate(true);
+        if (Build.VERSION.SDK_INT > 11) {
+        	this.pdgDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        	this.pdgDialog.setProgressNumberFormat(null); 
+        	this.pdgDialog.setProgressPercentFormat(null);
+        } else {
+        	this.pdgDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        }
+        this.pdgDialog.setMessage(this.ctxContext.getString(R.string.loading));
 
     }
 
@@ -87,6 +112,7 @@ public class Downloader extends AsyncTask<Uri, Integer, Request> {
     @Override
     public void onPostExecute(Request rqtRequest) {
 
+    	this.pdgDialog.dismiss();
         DownloadManager dlmManager = (DownloadManager) this.ctxContext.getSystemService(Context.DOWNLOAD_SERVICE);
         dlmManager.enqueue(rqtRequest);
 
