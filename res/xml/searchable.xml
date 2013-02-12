@@ -5,4 +5,5 @@
     android:queryAfterZeroResults="true"
     android:searchSuggestAuthority="com.mridang.moko.providers.QuickSearchProvider"
     android:searchSuggestSelection=" ?"
-    android:searchSuggestThreshold="3" />
+    android:searchSuggestThreshold="3"
+    android:includeInGlobalSearch="true" />
