@@ -20,7 +20,7 @@
             android:name=".search.Search"
             android:launchMode="singleTop"
             android:label="@string/title_activity_main"
-            android:exported="false" >
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -46,7 +46,7 @@
 
         <provider
             android:name=".providers.QuickSearchProvider"
-            android:exported="false"
+            android:exported="true"
             android:authorities="com.mridang.moko.providers.QuickSearchProvider" />
 
         <meta-data
