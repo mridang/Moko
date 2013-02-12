@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -100,15 +102,36 @@ public class Trend extends SherlockActivity {
      */
     public View.OnClickListener oclEnqueue = new OnClickListener() {
 
-        public void onClick(View vewView) {
+        @SuppressLint("NewApi")
+		public void onClick(View vewView) {
 
             EasyTracker.getTracker().trackEvent("OnClicks", "Enqueue", "Enqueue Torrent", null);
 
+            final ProgressDialog pdgDialog;
+            pdgDialog = new ProgressDialog(Trend.this);
+            pdgDialog.setIndeterminate(true);
+            if (Build.VERSION.SDK_INT > 11) {
+            	pdgDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+	            pdgDialog.setProgressNumberFormat(null); 
+	            pdgDialog.setProgressPercentFormat(null);
+            } else {
+            	pdgDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            }
+            pdgDialog.setMessage(Trend.this.getString(R.string.loading));
             AsyncHttpClient ahcClient = new AsyncHttpClient();
             PersistentCookieStore pscCookies = new PersistentCookieStore(Trend.this);
             ahcClient.setCookieStore(pscCookies);
             String[] strTypes = new String[] { "application/octet-stream", "application/x-bittorrent" };
             ahcClient.get(((URI) vewView.getTag()).toString(), new BinaryHttpResponseHandler(strTypes) {
+
+            	/*
+            	 * @see com.loopj.android.http.AsyncHttpResponseHandler#onStart()
+            	 */
+                public void onStart() {
+
+                	pdgDialog.show();
+                	
+                }
 
                 /*
                  * @see com.loopj.android.http.BinaryHttpResponseHandler#onSuccess(byte[])
@@ -157,6 +180,15 @@ public class Trend extends SherlockActivity {
                     e.printStackTrace();
                     EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 
+                }
+
+                /*
+                 * @see com.loopj.android.http.AsyncHttpResponseHandler#onFinish()
+                 */
+                public void onFinish() {
+
+                	pdgDialog.dismiss();
+                	
                 }
 
             });
@@ -391,14 +423,35 @@ public class Trend extends SherlockActivity {
      */
     public View.OnClickListener oclShare = new OnClickListener() {
 
-        public void onClick(final View vewView) {
+        @SuppressLint("NewApi")
+		public void onClick(final View vewView) {
 
             EasyTracker.getTracker().trackEvent("OnClicks", "Share", "Share Torrent", null);
 
+            final ProgressDialog pdgDialog;
+            pdgDialog = new ProgressDialog(Trend.this);
+            pdgDialog.setIndeterminate(true);
+            if (Build.VERSION.SDK_INT > 11) {
+            	pdgDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+	            pdgDialog.setProgressNumberFormat(null); 
+	            pdgDialog.setProgressPercentFormat(null);
+            } else {
+            	pdgDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            }
+            pdgDialog.setMessage(Trend.this.getString(R.string.loading));
             AsyncHttpClient ahcClient = new AsyncHttpClient();
             PersistentCookieStore pscCookies = new PersistentCookieStore(Trend.this);
             ahcClient.setCookieStore(pscCookies);
             ahcClient.get(((URI) vewView.getTag()).toString(), new AsyncHttpResponseHandler() {
+
+            	/*
+            	 * @see com.loopj.android.http.AsyncHttpResponseHandler#onStart()
+            	 */
+                public void onStart() {
+
+                	pdgDialog.show();
+                	
+                }
 
                 /*
                  * @see com.loopj.android.http.BinaryHttpResponseHandler#onSuccess(byte[])
@@ -448,6 +501,15 @@ public class Trend extends SherlockActivity {
                     e.printStackTrace();
                     EasyTracker.getTracker().trackException(e.getMessage(), e, false);
 
+                }
+
+                /*
+                 * @see com.loopj.android.http.AsyncHttpResponseHandler#onFinish()
+                 */
+                public void onFinish() {
+
+                	pdgDialog.dismiss();
+                	
                 }
 
             });
