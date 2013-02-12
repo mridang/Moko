@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Build;
@@ -18,7 +17,6 @@ import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.mridang.moko.R;
-import com.mridang.moko.receivers.NotficationReceiver;
 
 public class SettingsActivity extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener {
 
@@ -83,7 +81,6 @@ public class SettingsActivity extends SherlockPreferenceActivity implements OnSh
 
         try {
 
-            this.getApplicationContext().sendBroadcast(new Intent(this.getApplicationContext(), NotficationReceiver.class));
             DateFormat dftFormat = new SimpleDateFormat("ddMMyyyy");
             String strFilename = dftFormat.format(new Date());
 
