@@ -3,7 +3,6 @@ package com.mridang.moko.adapters;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,10 +61,6 @@ public class TrendingTorrentsAdapter extends BaseAdapter  {
         public View vewToolbar;
 
     }
-    /*
-     * A boolean value indicating whether an enqueuer is installed
-     */
-    Boolean booHasEnqueuer = true;
 
     /*
      * Constructor
@@ -81,17 +76,6 @@ public class TrendingTorrentsAdapter extends BaseAdapter  {
 
         if (this.objRows.size() == 0)
             this.ctxContext.showFilters();
-
-        try {
-
-            this.ctxContext.getPackageManager().
-                    getApplicationInfo("net.torrenttoise", 0 );
-
-        } catch (PackageManager.NameNotFoundException e) {
-
-            this.booHasEnqueuer = false;
-
-        }
 
     }
 
