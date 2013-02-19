@@ -45,9 +45,6 @@
     <string name="password">Password</string>
     <string name="configure_your_kickasstorrents_options">Configure your Kickass Torrent options</string>
     <string name="kickasstorrents">Kickass Torrents</string>
-    <string name="check_this_to_always_show_the_ratio">Check this to show an ongoing notfication with your private tracker ratios.</string>
-    <string name="rationotifications">Ratio Notifications</string>
-    <string name="configure_your_notification_options">Configure your notification options</string>
     <string name="loading">Loading</string>
 
     <!-- Strings for the popup menu options -->
