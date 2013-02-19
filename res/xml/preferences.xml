@@ -52,17 +52,4 @@
             android:summary="@string/check_this_to_use_this_service"/>
     </PreferenceCategory>    
     
-    <PreferenceCategory 
-        android:title="@string/rationotifications" 
-        android:summary="@string/configure_your_notification_options" 
-        android:key="rationotifications">
-        
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="show_tracker_ratios"
-            android:title="@string/use" 
-            android:summary="@string/check_this_to_always_show_the_ratio"/>
-        
-    </PreferenceCategory> 
-    
 </PreferenceScreen>
